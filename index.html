@@ -10,16 +10,16 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
 :root{
-  --bg-color:#FCFAFD; /* Fondo general con un levísimo toque lila/beige */
-  --card:#FFFFFF; 
-  --card-2:#F4EFF7; /* Lila muy claro para tarjetas secundarias */
+  --bg-color:#FCFAFD; 
+  --card:rgba(255, 255, 255, 0.95); /* Blanco con sutil transparencia para que el fondo respire */
+  --card-2:#F4EFF7; 
   --white:#FFFFFF;
   --main-dark:#4A4138; 
   --text-color:#6B6056; 
   --gold:#C5A880; 
   --gold-light:#DFCDAE; 
-  --lilac:#EAE3F2; /* Lila principal claro */
-  --lilac-dark:#BCAED4; /* Lila un poco más profundo para contrastes */
+  --lilac:#EAE3F2; 
+  --lilac-dark:#BCAED4; 
   --ink:#4A4138;
   --font-title:'Playfair Display',serif; 
   --font-script:'Great Vibes',cursive;
@@ -28,7 +28,20 @@
   --ease:cubic-bezier(.22,1,.36,1);
 }
 *{box-sizing:border-box;margin:0;padding:0}
-body{background:var(--bg-color);color:var(--text-color);font-family:var(--font-body);overflow-x:hidden}
+
+/* Fondo del cuerpo de la invitación */
+body{
+  background-color: var(--bg-color);
+  background-image: url('assets/fondo.jpg');
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover; /* Proporcional sin distorsionar */
+  background-attachment: fixed; /* Se mantiene fija al deslizar */
+  color:var(--text-color);
+  font-family:var(--font-body);
+  overflow-x:hidden;
+}
+
 i.fa-solid,i.fa-regular,i.fa-brands{display:inline-block;line-height:1}
 
 /* ===== ANIMACIONES DE ENTRADA ===== */
@@ -59,7 +72,7 @@ i.fa-solid,i.fa-regular,i.fa-brands{display:inline-block;line-height:1}
 .timeline-icon{animation:pulseRing 3s infinite}
 .timeline-section::before{transform-origin:top;animation:lineGrow 2.5s var(--ease) both}
 
-/* ===== SOBRE BLANCO / LILA CON FONDO DE IMAGEN ===== */
+/* ===== SOBRE LILA CON FONDO DE IMAGEN ===== */
 #envelope-screen{
   position:fixed;
   inset:0;
@@ -68,7 +81,7 @@ i.fa-solid,i.fa-regular,i.fa-brands{display:inline-block;line-height:1}
   background-image: url('assets/fondo.jpg');
   background-position: center center;
   background-repeat: no-repeat;
-  background-size: cover; /* Escala proporcional sin distorsionar ni extender forzosamente */
+  background-size: cover; 
   z-index:9999;
   display:flex;
   flex-direction:column;
@@ -94,7 +107,7 @@ i.fa-solid,i.fa-regular,i.fa-brands{display:inline-block;line-height:1}
 /* Estructura */
 #invitation-content{display:flex;justify-content:center;padding:20px 10px;visibility:hidden;opacity:0;transition:opacity 1.5s ease}
 .invitation-container{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;max-width:1200px;width:100%}
-.column{display:flex;flex-direction:column;align-items:center;padding:50px 30px;text-align:center;position:relative;overflow:hidden;background:var(--card);box-shadow:0 15px 40px rgba(0,0,0,.04);border:1px solid rgba(188,174,212,.3)}
+.column{display:flex;flex-direction:column;align-items:center;padding:50px 30px;text-align:center;position:relative;overflow:hidden;background:var(--card);box-shadow:0 15px 40px rgba(0,0,0,.08);border:1px solid rgba(188,174,212,.3); border-radius: 4px; backdrop-filter: blur(5px);}
 h1,h2,h3{font-family:var(--font-title);font-weight:400;color:var(--main-dark)}
 .divider{display:flex;align-items:center;justify-content:center;margin:25px 0;color:var(--lilac-dark);width:100%;opacity:.9}
 .divider::before,.divider::after{content:"";height:1px;flex-grow:1;max-width:60px;background:var(--lilac-dark);margin:0 15px;opacity:.5}
@@ -160,7 +173,7 @@ h1,h2,h3{font-family:var(--font-title);font-weight:400;color:var(--main-dark)}
 .form-group-ed{margin-bottom:25px;text-align:left}
 .form-group-ed label{display:block;font-family:var(--font-sans);font-size:.75rem;color:var(--main-dark);margin-bottom:8px;letter-spacing:2px;text-transform:uppercase;font-weight:600}
 .form-group-ed input[type="text"],.form-group-ed select,.form-group-ed textarea{width:100%;padding:10px 0;background:transparent;border:none;border-bottom:1px solid var(--lilac-dark);border-radius:0;font-family:var(--font-body);font-size:1rem;color:var(--main-dark);outline:none;transition:all .3s}
-.form-group-ed select option{background:var(--card);color:var(--main-dark)}
+.form-group-ed select option{background:#FFFFFF;color:var(--main-dark)}
 .form-group-ed input:focus,.form-group-ed select:focus,.form-group-ed textarea:focus{border-bottom-color:var(--gold)}
 #paseSection{padding-bottom:20px;border-bottom:1px dashed rgba(188,174,212,.6);margin-bottom:25px}
 .btn-whatsapp{width:100%;background:var(--gold);color:var(--white);border:1px solid var(--gold);font-size:.85rem;font-weight:600;padding:15px;letter-spacing:2px;border-radius:2px;display:flex;justify-content:center;align-items:center;gap:10px;cursor:pointer;transition:all .3s;text-transform:uppercase;font-family:var(--font-sans)}
@@ -170,7 +183,7 @@ h1,h2,h3{font-family:var(--font-title);font-weight:400;color:var(--main-dark)}
 .radio-ed-label{display:flex;align-items:center;gap:8px;cursor:pointer;font-size:.95rem;color:var(--main-dark)}
 .radio-ed-label input[type="radio"]{accent-color:var(--lilac-dark)}
 
-.footer-editorial{width:100%;text-align:center;padding:40px 20px;border-top:1px solid rgba(188,174,212,.4);margin-top:40px}
+.footer-editorial{width:100%;text-align:center;padding:40px 20px;border-top:1px solid rgba(188,174,212,.4);margin-top:40px; background: rgba(255,255,255,0.7);}
 .footer-editorial p{font-family:var(--font-sans);font-size:.6rem;letter-spacing:5px;color:var(--gold);text-transform:uppercase;font-weight:600}
 
 /* Brillo en títulos */
