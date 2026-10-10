@@ -11,7 +11,7 @@
 <style>
 :root{
   --bg-color:#FCFAFD; 
-  --card:rgba(255, 255, 255, 0.95); /* Blanco con sutil transparencia para que el fondo respire */
+  --card:rgba(255, 255, 255, 0.95);
   --card-2:#F4EFF7; 
   --white:#FFFFFF;
   --main-dark:#4A4138; 
@@ -33,9 +33,9 @@
 body{
   background-color: var(--bg-color);
   background-image: url('assets/fondo.jpg');
-  background-position: center center;
-  background-repeat: no-repeat;
-  background-size: cover; /* Proporcional sin distorsionar */
+  background-position: center top;
+  background-repeat: repeat;
+  background-size: auto; /* Proporción normal, sin extenderse */
   background-attachment: fixed; /* Se mantiene fija al deslizar */
   color:var(--text-color);
   font-family:var(--font-body);
@@ -79,9 +79,9 @@ i.fa-solid,i.fa-regular,i.fa-brands{display:inline-block;line-height:1}
   height:100vh;
   background-color: var(--bg-color);
   background-image: url('assets/fondo.jpg');
-  background-position: center center;
-  background-repeat: no-repeat;
-  background-size: cover; 
+  background-position: center top;
+  background-repeat: repeat;
+  background-size: auto; /* Proporción normal, sin extenderse */
   z-index:9999;
   display:flex;
   flex-direction:column;
