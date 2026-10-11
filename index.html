@@ -26,6 +26,8 @@
   --font-body:'Lora',serif; 
   --font-sans:'Montserrat',sans-serif;
   --ease:cubic-bezier(.22,1,.36,1);
+  /* Textura de papel poroso (ruido fractal) */
+  --paper-texture: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
 }
 *{box-sizing:border-box;margin:0;padding:0}
 
@@ -79,7 +81,7 @@ i.fa-solid,i.fa-regular,i.fa-brands{display:inline-block;line-height:1}
 .timeline-icon{animation:pulseRing 3s infinite}
 .timeline-section::before{transform-origin:top;animation:lineGrow 2.5s var(--ease) both}
 
-/* ===== SOBRE LILA CON FONDO DE IMAGEN EXACTAMENTE COMO ESTABA ===== */
+/* ===== SOBRE LILA CON FONDO DE IMAGEN ===== */
 #envelope-screen{
   position:fixed;
   inset:0;
@@ -111,10 +113,24 @@ i.fa-solid,i.fa-regular,i.fa-brands{display:inline-block;line-height:1}
 #audio-btn{position:fixed;bottom:25px;right:25px;background:var(--lilac);color:var(--main-dark);border:1px solid var(--lilac-dark);border-radius:50%;width:55px;height:55px;font-size:1.2rem;cursor:pointer;z-index:9000;box-shadow:0 4px 15px rgba(0,0,0,.15);transition:all .3s;display:none;align-items:center;justify-content:center}
 #audio-btn:hover{transform:scale(1.1);background:var(--lilac-dark);color:var(--white)}
 
-/* Estructura */
+/* Estructura de las columnas con textura de papel */
 #invitation-content{display:flex;justify-content:center;padding:20px 10px;visibility:hidden;opacity:0;transition:opacity 1.5s ease}
 .invitation-container{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;max-width:1200px;width:100%}
-.column{display:flex;flex-direction:column;align-items:center;padding:50px 30px;text-align:center;position:relative;overflow:hidden;background:var(--card);box-shadow:0 15px 40px rgba(0,0,0,.08);border:1px solid rgba(188,174,212,.3); border-radius: 4px; backdrop-filter: blur(5px);}
+.column{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  padding:50px 30px;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+  background-color: var(--card);
+  background-image: var(--paper-texture); /* Aplicación de la textura */
+  box-shadow:0 15px 40px rgba(0,0,0,.08);
+  border:1px solid rgba(188,174,212,.3); 
+  border-radius: 4px; 
+  backdrop-filter: blur(5px);
+}
 h1,h2,h3{font-family:var(--font-title);font-weight:400;color:var(--main-dark)}
 .divider{display:flex;align-items:center;justify-content:center;margin:25px 0;color:var(--lilac-dark);width:100%;opacity:.9}
 .divider::before,.divider::after{content:"";height:1px;flex-grow:1;max-width:60px;background:var(--lilac-dark);margin:0 15px;opacity:.5}
@@ -144,8 +160,13 @@ h1,h2,h3{font-family:var(--font-title);font-weight:400;color:var(--main-dark)}
 #countdown-timer span{display:flex;flex-direction:column;font-size:.65rem;letter-spacing:2px;align-items:center}
 #countdown-timer b{font-size:1.6rem;color:var(--main-dark);font-weight:400;font-family:var(--font-title);line-height:1;margin-bottom:5px}
 
-/* Ubicación */
-.venue-card{width:100%;margin-bottom:40px;background:var(--card-2);padding:30px 20px;border-radius:2px;box-shadow:0 5px 15px rgba(0,0,0,.03);border:1px solid rgba(188,174,212,.3);transition:transform .4s}
+/* Ubicación (Tarjeta interior con textura) */
+.venue-card{
+  width:100%;margin-bottom:40px;
+  background-color:var(--card-2);
+  background-image: var(--paper-texture);
+  padding:30px 20px;border-radius:2px;box-shadow:0 5px 15px rgba(0,0,0,.03);border:1px solid rgba(188,174,212,.3);transition:transform .4s
+}
 .venue-card:hover{transform:translateY(-5px)}
 .venue-icon{font-size:2rem;color:var(--gold);margin:0 8px 15px}
 .venue-type{font-family:var(--font-sans);font-size:.75rem;letter-spacing:3px;color:var(--lilac-dark);margin-bottom:5px;font-weight:600}
@@ -164,8 +185,12 @@ h1,h2,h3{font-family:var(--font-title);font-weight:400;color:var(--main-dark)}
 .timeline-time{font-family:var(--font-sans);font-weight:600;font-size:.95rem;color:var(--gold);letter-spacing:1px}
 .timeline-event{font-family:var(--font-title);font-size:1.15rem;color:var(--main-dark);margin-top:2px;text-transform:uppercase;letter-spacing:.5px}
 
-/* Vestimenta */
-.dress-code-box{background:linear-gradient(135deg,var(--lilac) 0%,var(--card-2) 100%);color:var(--main-dark);width:calc(100% + 60px);margin:0 -30px 40px;padding:50px 30px;border-top:1px solid rgba(188,174,212,.5);border-bottom:1px solid rgba(188,174,212,.5);box-shadow:inset 0 0 30px rgba(0,0,0,.02)}
+/* Vestimenta (Caja con textura + gradiente) */
+.dress-code-box{
+  background-image: var(--paper-texture), linear-gradient(135deg,var(--lilac) 0%,var(--card-2) 100%);
+  color:var(--main-dark);
+  width:calc(100% + 60px);margin:0 -30px 40px;padding:50px 30px;border-top:1px solid rgba(188,174,212,.5);border-bottom:1px solid rgba(188,174,212,.5);box-shadow:inset 0 0 30px rgba(0,0,0,.02)
+}
 .dress-icons{display:flex;justify-content:center;gap:28px;margin-bottom:15px;color:var(--main-dark);font-size:2.2rem}
 .dress-icons i{animation:floatY 3.5s ease-in-out infinite}
 .dress-icons i:last-child{animation-delay:.6s}
@@ -173,8 +198,13 @@ h1,h2,h3{font-family:var(--font-title);font-weight:400;color:var(--main-dark)}
 .dress-code-main{font-size:2.8rem;margin-bottom:10px;line-height:1.1;color:var(--main-dark)}
 .no-kids-block{padding:25px;width:100%;border-top:1px solid rgba(188,174,212,.4);border-bottom:1px solid rgba(188,174,212,.4);margin-bottom:40px}
 
-/* Formularios */
-.editorial-form-box{width:100%;background:var(--card-2);padding:40px 30px;border-radius:2px;border:1px solid rgba(188,174,212,.4);box-shadow:0 10px 30px rgba(0,0,0,.04);margin-top:20px}
+/* Formularios (Tarjeta interior con textura) */
+.editorial-form-box{
+  width:100%;
+  background-color:var(--card-2);
+  background-image: var(--paper-texture);
+  padding:40px 30px;border-radius:2px;border:1px solid rgba(188,174,212,.4);box-shadow:0 10px 30px rgba(0,0,0,.04);margin-top:20px
+}
 .rsvp-header{font-size:2rem;margin-bottom:5px;color:var(--main-dark)}
 .rsvp-subtitle{font-family:var(--font-sans);font-size:.75rem;letter-spacing:3px;color:var(--lilac-dark);margin-bottom:30px;text-transform:uppercase;font-weight: 600;}
 .form-group-ed{margin-bottom:25px;text-align:left}
