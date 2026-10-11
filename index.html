@@ -29,17 +29,24 @@
 }
 *{box-sizing:border-box;margin:0;padding:0}
 
-/* Fondo del cuerpo de la invitación */
+/* Estructura base */
 body{
   background-color: var(--bg-color);
+  color:var(--text-color);
+  font-family:var(--font-body);
+  overflow-x:hidden;
+}
+
+/* Solución definitiva para fondo fijo perfecto en móviles sin que se estire */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
   background-image: url('assets/fondo.jpg');
   background-position: center center;
   background-repeat: no-repeat;
   background-size: cover;
-  background-attachment: fixed;
-  color:var(--text-color);
-  font-family:var(--font-body);
-  overflow-x:hidden;
+  z-index: -1;
 }
 
 i.fa-solid,i.fa-regular,i.fa-brands{display:inline-block;line-height:1}
@@ -72,7 +79,7 @@ i.fa-solid,i.fa-regular,i.fa-brands{display:inline-block;line-height:1}
 .timeline-icon{animation:pulseRing 3s infinite}
 .timeline-section::before{transform-origin:top;animation:lineGrow 2.5s var(--ease) both}
 
-/* ===== SOBRE LILA CON FONDO DE IMAGEN ===== */
+/* ===== SOBRE LILA CON FONDO DE IMAGEN EXACTAMENTE COMO ESTABA ===== */
 #envelope-screen{
   position:fixed;
   inset:0;
