@@ -18,15 +18,14 @@
   --text-color:#6B6056; 
   --gold:#C5A880; 
   --gold-light:#DFCDAE; 
-  --lilac:#E2D1F0; /* Lila sutilmente más saturado y vivo */
-  --lilac-dark:#AC8CD4; /* Lila oscuro con mayor saturación para contrastes */
+  --lilac:#E2D1F0;
+  --lilac-dark:#AC8CD4;
   --ink:#4A4138;
   --font-title:'Playfair Display',serif; 
   --font-script:'Great Vibes',cursive;
   --font-body:'Lora',serif; 
   --font-sans:'Montserrat',sans-serif;
   --ease:cubic-bezier(.22,1,.36,1);
-  /* Textura de papel mejorada, monocromática y más visible */
   --paper-texture: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.18'/%3E%3C/svg%3E");
 }
 *{box-sizing:border-box;margin:0;padding:0}
@@ -39,7 +38,6 @@ body{
   overflow-x:hidden;
 }
 
-/* Solución definitiva para fondo fijo perfecto en móviles sin que se estire */
 body::before {
   content: "";
   position: fixed;
@@ -113,6 +111,65 @@ i.fa-solid,i.fa-regular,i.fa-brands{display:inline-block;line-height:1}
 #audio-btn{position:fixed;bottom:25px;right:25px;background:var(--lilac);color:var(--main-dark);border:1px solid var(--lilac-dark);border-radius:50%;width:55px;height:55px;font-size:1.2rem;cursor:pointer;z-index:9000;box-shadow:0 4px 15px rgba(0,0,0,.15);transition:all .3s;display:none;align-items:center;justify-content:center}
 #audio-btn:hover{transform:scale(1.1);background:var(--lilac-dark);color:var(--white)}
 
+/* ===== LIGHTBOX (Visor de fotos) ===== */
+#lightbox {
+  display: none;
+  position: fixed;
+  z-index: 10000;
+  left: 0; top: 0; width: 100%; height: 100%;
+  background-color: rgba(0,0,0,0.85);
+  backdrop-filter: blur(8px);
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+#lightbox.active {
+  display: flex;
+  opacity: 1;
+}
+#lightbox-img {
+  max-width: 90%;
+  max-height: 85vh;
+  border-radius: 6px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+  transform: scale(0.9);
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  object-fit: contain;
+}
+#lightbox.active #lightbox-img {
+  transform: scale(1);
+}
+.lightbox-close {
+  position: absolute;
+  top: 20px; right: 25px;
+  color: white;
+  font-size: 40px;
+  font-weight: 300;
+  cursor: pointer;
+  z-index: 10001;
+  transition: color 0.3s;
+}
+.lightbox-close:hover { color: var(--gold); }
+
+/* ===== FOTOS "SUELTAS" ===== */
+.photo-insert {
+  width: calc(100% + 40px); /* Hace que sobresalgan de la caja de la columna */
+  margin: 35px -20px;
+  border-radius: 4px;
+  box-shadow: 0 15px 35px rgba(74,65,56,0.18);
+  cursor: pointer;
+  object-fit: cover;
+  transition: transform 0.5s var(--ease), box-shadow 0.5s var(--ease);
+  z-index: 10;
+  position: relative;
+  display: block;
+}
+.photo-rotate-left { transform: rotate(-3deg); }
+.photo-rotate-right { transform: rotate(3deg); }
+.photo-rotate-left:hover { transform: rotate(-1deg) scale(1.04) translateY(-5px); box-shadow: 0 25px 45px rgba(74,65,56,0.25); z-index: 20;}
+.photo-rotate-right:hover { transform: rotate(1deg) scale(1.04) translateY(-5px); box-shadow: 0 25px 45px rgba(74,65,56,0.25); z-index: 20;}
+
 /* Estructura de las columnas con textura de papel */
 #invitation-content{display:flex;justify-content:center;padding:20px 10px;visibility:hidden;opacity:0;transition:opacity 1.5s ease}
 .invitation-container{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;max-width:1200px;width:100%}
@@ -123,9 +180,8 @@ i.fa-solid,i.fa-regular,i.fa-brands{display:inline-block;line-height:1}
   padding:50px 30px;
   text-align:center;
   position:relative;
-  overflow:hidden;
   background-color: var(--card);
-  background-image: var(--paper-texture); /* Aplicación de la textura granulada */
+  background-image: var(--paper-texture);
   box-shadow:0 15px 40px rgba(0,0,0,.08);
   border:1px solid rgba(172,140,212,.3); 
   border-radius: 4px; 
@@ -240,6 +296,12 @@ h2:not(.dress-code-main),.names-container span.name,.save-date-date{
 </head>
 <body>
 
+<!-- Lightbox Modal -->
+<div id="lightbox" onclick="closeLightbox()">
+  <span class="lightbox-close">&times;</span>
+  <img id="lightbox-img" src="" alt="Ampliación">
+</div>
+
 <audio id="bg-audio" loop><source src="assets/song.mp3" type="audio/mpeg"></audio>
 
 <!-- SOBRE -->
@@ -265,11 +327,18 @@ h2:not(.dress-code-main),.names-container span.name,.save-date-date{
       <span class="ampersand anim-el rotate-in" style="transition-delay:.5s">y</span>
       <span class="name anim-el track-in" style="transition-delay:.9s">DIANA</span>
     </div>
+    
+    <!-- FOTO 1 -->
+    <img src="assets/1.jpg" class="photo-insert photo-rotate-left anim-el scale-in" onclick="openLightbox(this.src)" alt="Foto de Arturo y Diana">
+
     <div class="divider anim-el scale-in" style="transition-delay:.3s"><i class="fa-solid fa-heart" style="font-size:.9rem"></i></div>
 
     <p class="welcome-phrase anim-el blur-in">
       "Con mucha ilusión queremos compartir contigo uno de los días más importantes de nuestras vidas. Después de tantos momentos compartidos, ha llegado el momento de celebrar nuestro amor y comenzar un nuevo capítulo juntos.<br><br>Será un honor contar con tu presencia y celebrar este día tan especial a nuestro lado."
     </p>
+
+    <!-- FOTO 2 -->
+    <img src="assets/2.jpg" class="photo-insert photo-rotate-right anim-el blur-in" onclick="openLightbox(this.src)" alt="Foto de Arturo y Diana">
 
     <div class="parents-section">
       <p class="anim-el reveal-text" style="font-family:var(--font-script);font-size:2.2rem;color:var(--gold);margin-bottom:25px">Con la bendición de nuestros padres</p>
@@ -290,6 +359,9 @@ h2:not(.dress-code-main),.names-container span.name,.save-date-date{
       <div class="save-date-date anim-el track-in">13 &bull; 12 &bull; 2026</div>
       <p class="intro-text anim-el fade-in-up">DOMINGO</p>
     </div>
+
+    <!-- FOTO 3 -->
+    <img src="assets/3.jpg" class="photo-insert photo-rotate-left anim-el fade-in-up" onclick="openLightbox(this.src)" alt="Foto de Arturo y Diana">
 
     <div class="calendar-wrapper anim-el flip-in">
       <div class="calendar-month">Diciembre 2026</div>
@@ -318,6 +390,10 @@ h2:not(.dress-code-main),.names-container span.name,.save-date-date{
 
   <!-- ===== COLUMNA 2 ===== -->
   <div class="column">
+    
+    <!-- FOTO 4 -->
+    <img src="assets/4.jpg" class="photo-insert photo-rotate-right anim-el scale-in" onclick="openLightbox(this.src)" alt="Foto de Arturo y Diana">
+
     <h2 class="anim-el track-in" style="font-size:2.2rem;margin-bottom:5px">UBICACIÓN</h2>
     <div class="divider anim-el scale-in"><i class="fa-solid fa-map-location-dot" style="font-size:.9rem"></i></div>
 
@@ -334,6 +410,9 @@ h2:not(.dress-code-main),.names-container span.name,.save-date-date{
       <a href="https://maps.app.goo.gl/ksDdHJdEjB3PU32bA?g_st=ic" target="_blank" class="btn" style="width:100%"><i class="fa-solid fa-location-dot"></i> UBICACIÓN EXACTA</a>
     </div>
 
+    <!-- FOTO 5 -->
+    <img src="assets/5.jpg" class="photo-insert photo-rotate-left anim-el blur-in" onclick="openLightbox(this.src)" alt="Foto de Arturo y Diana">
+
     <h2 class="anim-el track-in" style="font-size:2rem;margin-top:20px">ITINERARIO</h2>
     <div class="divider anim-el scale-in"><i class="fa-regular fa-clock" style="font-size:.9rem"></i></div>
 
@@ -343,10 +422,17 @@ h2:not(.dress-code-main),.names-container span.name,.save-date-date{
       <div class="timeline-item anim-el fade-in-left"><div class="timeline-icon"><i class="fa-solid fa-utensils"></i></div><div><div class="timeline-time">08:00 P.M.</div><div class="timeline-event">Banquete</div></div></div>
       <div class="timeline-item anim-el fade-in-left"><div class="timeline-icon"><i class="fa-solid fa-music"></i></div><div><div class="timeline-time">09:30 P.M.</div><div class="timeline-event">¡Abrimos pista!</div></div></div>
     </div>
+    
+    <!-- FOTO 6 -->
+    <img src="assets/6.jpg" class="photo-insert photo-rotate-right anim-el fade-in-up" onclick="openLightbox(this.src)" alt="Foto de Arturo y Diana">
+    
   </div>
 
   <!-- ===== COLUMNA 3 ===== -->
   <div class="column">
+    
+    <!-- FOTO 7 -->
+    <img src="assets/7.jpg" class="photo-insert photo-rotate-left anim-el fade-in-down" onclick="openLightbox(this.src)" alt="Foto de Arturo y Diana">
     
     <div class="dress-code-box anim-el scale-in" style="margin-top: 10px;">
       <div class="dress-icons">
@@ -354,14 +440,10 @@ h2:not(.dress-code-main),.names-container span.name,.save-date-date{
         <!-- Ícono de mujer con vestido largo de gala -->
         <i style="display:inline-flex;align-items:flex-end;">
           <svg viewBox="0 0 32 36" fill="currentColor" height="1em" aria-label="Mujer con vestido de gala" role="img">
-            <!-- Cabeza -->
             <circle cx="16" cy="4.6" r="3.5"/>
-            <!-- Cuello -->
             <rect x="14.6" y="7.6" width="2.8" height="3.2" rx="1"/>
-            <!-- Brazos -->
             <path d="M10.2 11.6 L6.6 23 L8.9 23.7 L12 14.6 Z"/>
             <path d="M21.8 11.6 L25.4 23 L23.1 23.7 L20 14.6 Z"/>
-            <!-- Corpiño + falda larga de gala con vuelo -->
             <path d="M10.6 11.4 Q16 14.6 21.4 11.4 L20.2 19.6 Q22.2 27 28.8 35.2 Q16 37.4 3.2 35.2 Q9.8 27 11.8 19.6 Z"/>
           </svg>
         </i>
@@ -371,6 +453,9 @@ h2:not(.dress-code-main),.names-container span.name,.save-date-date{
       <p style="font-family:var(--font-sans);letter-spacing:3px;font-size:.85rem;margin-bottom:20px;color:var(--text-color);font-weight: 500;">( NO COLORES CLAROS )</p>
       <p style="font-size:.95rem;font-style:italic;opacity:.9;line-height:1.6">Nos encantará verlos lucir espectaculares en esta gran noche.</p>
     </div>
+
+    <!-- FOTO 8 -->
+    <img src="assets/8.jpg" class="photo-insert photo-rotate-right anim-el blur-in" onclick="openLightbox(this.src)" alt="Foto de Arturo y Diana">
 
     <div class="no-kids-block anim-el blur-in">
       <p style="font-size:1rem;font-style:italic;line-height:1.6;text-align:center">
@@ -389,10 +474,16 @@ h2:not(.dress-code-main),.names-container span.name,.save-date-date{
     
     <a href="https://open.spotify.com/playlist/5JYfmkScv2RMCFEBvm7BBJ?si=5373c03954fd46ae&pt=9e66ead9e1841d189553e6eb2534e878" target="_blank" class="btn anim-el flip-in" style="width:100%"><i class="fa-solid fa-music"></i> AGREGAR CANCIONES</a>
 
+    <!-- FOTO 9 -->
+    <img src="assets/9.jpg" class="photo-insert photo-rotate-left anim-el scale-in" onclick="openLightbox(this.src)" alt="Foto de Arturo y Diana">
+
     <h2 class="anim-el track-in" style="font-size:2rem;margin-top:50px">GALERÍA EN VIVO</h2>
     <div class="divider anim-el scale-in"><i class="fa-solid fa-camera-retro" style="font-size:.9rem"></i></div>
     <p class="anim-el blur-in" style="font-size:.95rem;line-height:1.6">¡Queremos ver la boda a través de tus ojos! Comparte tus fotos y videos con nosotros.</p>
     <a href="https://drive.google.com/drive/folders/1Ygk8CHUwRJePyZ05hiStbZYgsEdYSfyT?usp=sharing" target="_blank" class="btn anim-el fade-in-up" style="width:100%;margin-top:25px"><i class="fa-solid fa-cloud-arrow-up"></i> SUBIR MIS FOTOS</a>
+
+    <!-- FOTO 10 -->
+    <img src="assets/10.jpg" class="photo-insert photo-rotate-right anim-el blur-in" onclick="openLightbox(this.src)" alt="Foto de Arturo y Diana">
 
     <!-- RSVP -->
     <div class="editorial-form-box anim-el flip-in" style="margin-top:50px">
@@ -461,10 +552,30 @@ function toggleAudio(){
   else{audio.pause();audioIcon.classList.replace('fa-pause','fa-music')}
 }
 
-// 2. WHATSAPP 
+// 2. LIGHTBOX DE IMÁGENES
+function openLightbox(src) {
+  const lb = document.getElementById('lightbox');
+  const img = document.getElementById('lightbox-img');
+  img.src = src;
+  lb.style.display = 'flex';
+  setTimeout(() => lb.classList.add('active'), 10);
+}
+function closeLightbox() {
+  const lb = document.getElementById('lightbox');
+  lb.classList.remove('active');
+  setTimeout(() => lb.style.display = 'none', 400);
+}
+// Cerrar el lightbox al hacer clic en el fondo oscuro
+document.getElementById('lightbox').addEventListener('click', function(e) {
+  if (e.target !== document.getElementById('lightbox-img')) {
+    closeLightbox();
+  }
+});
+
+// 3. WHATSAPP 
 const telefonoWhatsApp="528183961645";
 
-// 3. INICIALIZACIÓN
+// 4. INICIALIZACIÓN
 document.addEventListener("DOMContentLoaded",function(){
   document.querySelectorAll('.timeline-section').forEach(s=>s.querySelectorAll('.anim-el').forEach((el,i)=>el.style.transitionDelay=(i*0.12)+'s'));
   document.querySelectorAll('.parents-section .anim-el').forEach((el,i)=>{if(!el.style.transitionDelay)el.style.transitionDelay=(i*0.2)+'s'});
@@ -521,7 +632,7 @@ document.addEventListener("DOMContentLoaded",function(){
   },1000);
 });
 
-// 4. RSVP
+// 5. RSVP
 function sendRSVP(){
   const list=document.getElementById('dynamicGuestList');
   let mensaje="";
@@ -544,7 +655,7 @@ function sendRSVP(){
   window.open(`https://wa.me/${telefonoWhatsApp}?text=${encodeURIComponent(mensaje)}`,'_blank');
 }
 
-// 5. BUENOS DESEOS
+// 6. BUENOS DESEOS
 function sendWishes(){
   const w=document.getElementById('wishesText').value.trim();
   if(!w){alert("Por favor, escribe un mensaje primero.");return}
@@ -552,7 +663,7 @@ function sendWishes(){
   window.open(`https://wa.me/${telefonoWhatsApp}?text=${encodeURIComponent(m)}`,'_blank');
 }
 
-// 6. ICS (13 dic 2026, 6:00 p.m. hora centro = 00:00 UTC del día 14)
+// 7. ICS
 function downloadICS(){
   const cal=`BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//Boda Arturo y Diana//ES\nBEGIN:VEVENT\nDTSTART:20261214T000000Z\nDTEND:20261214T070000Z\nSUMMARY:Boda de Arturo y Diana\nLOCATION:Fuentes Platinum Eventos\nDESCRIPTION:¡Acompáñanos a celebrar nuestra boda! Ceremonia a las 6:00 PM en Fuentes Platinum Eventos.\nEND:VEVENT\nEND:VCALENDAR`;
   const url=URL.createObjectURL(new Blob([cal],{type:'text/calendar;charset=utf-8'}));
