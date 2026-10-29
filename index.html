@@ -582,6 +582,8 @@ h2:not(.dress-code-main),.names-container span.name,.save-date-date{
         </p>
       </div>
 
+      <p id="idNotFound" style="display:none;font-size:.85rem;font-style:italic;line-height:1.5;margin-bottom:20px;color:var(--main-dark)">No pudimos identificar tu invitación. Verifica que tu enlace esté completo o escríbenos para ayudarte.</p>
+
       <form id="rsvpForm" onsubmit="return false">
         <div id="genericRSVPInputs">
           <div class="form-group-ed"><label for="rsvpNombre">Nombre del Titular:</label><input type="text" id="rsvpNombre" placeholder="Escribe tu nombre completo"></div>
@@ -593,7 +595,20 @@ h2:not(.dress-code-main),.names-container span.name,.save-date-date{
             </select>
           </div>
         </div>
-        <div id="dynamicGuestList" style="width:100%;text-align:left"></div>
+        <div id="cupoRSVPInputs" style="display:none">
+          <div class="form-group-ed"><label for="cupoAsistencia">Respuesta:</label>
+            <select id="cupoAsistencia" onchange="onCupoChange()">
+              <option value="">Selecciona una opción</option>
+              <option value="si">¡Sí, asistiré con gusto!</option>
+              <option value="no">Lamento no poder acompañarlos</option>
+            </select>
+          </div>
+          <div class="form-group-ed" id="cupoLugaresGroup" style="display:none">
+            <label for="cupoLugares">¿Cuántos lugares confirmas?</label>
+            <select id="cupoLugares"></select>
+            <p id="cupoHint" style="font-size:.8rem;font-style:italic;line-height:1.5;margin-top:10px;opacity:.85"></p>
+          </div>
+        </div>
         <button type="button" onclick="sendRSVP()" class="btn-whatsapp" style="margin-top:25px"><i class="fa-brands fa-whatsapp" style="font-size:1.2rem"></i> CONFIRMAR VÍA WHATSAPP</button>
         <p class="deadline-text">CONFIRMAR ANTES DEL 15 DE NOVIEMBRE</p>
       </form>
@@ -655,6 +670,94 @@ document.addEventListener('keydown', function(e){
 // 3. WHATSAPP
 const telefonoWhatsApp="528123402093";
 
+// 3.1 PASES NOMINALES INVYTIA: ?id=N  ->  titular + pases asignados (fuente: DIANA_formato.xlsx)
+const listaInvitados={
+  1:{inv:"Eduardo Ramirez",pases:4},
+  2:{inv:"Hector Rodriguez",pases:2},
+  3:{inv:"Oralia Rodriguez",pases:2},
+  4:{inv:"Grace Contreras",pases:2},
+  5:{inv:"Leticia Rodriguez",pases:2},
+  6:{inv:"Rodrigo Rodriguez",pases:2},
+  7:{inv:"Cindy Rodriguez",pases:2},
+  8:{inv:"Gabriela Perez",pases:2},
+  9:{inv:"Esthela Perez",pases:5},
+  10:{inv:"Alberto Perez",pases:4},
+  11:{inv:"Jose Perez",pases:2},
+  12:{inv:"Consuelo Ramirez",pases:1},
+  13:{inv:"Consuelo Perez",pases:2},
+  14:{inv:"Aldo Alvarez",pases:1},
+  15:{inv:"Gustavo Gutierrez",pases:2},
+  16:{inv:"Luis Sandia",pases:1},
+  17:{inv:"Iiliana Ramirez",pases:2},
+  18:{inv:"Jonathan Peña",pases:2},
+  19:{inv:"Cesar Cruz",pases:3},
+  20:{inv:"Jonathan Garcia",pases:1},
+  21:{inv:"Isai Rosas",pases:1},
+  22:{inv:"Adan Sanchez",pases:2},
+  23:{inv:"Orlando Sanchez",pases:2},
+  24:{inv:"Ricardo Herrera",pases:2},
+  25:{inv:"Edson Hernandez",pases:2},
+  26:{inv:"Blanca Jauregui",pases:3},
+  27:{inv:"Ariadna Gonzalez",pases:2},
+  28:{inv:"Raul Gonzalez",pases:2},
+  29:{inv:"Hilda Jauregui",pases:3},
+  30:{inv:"Paulina Jauregui",pases:4},
+  31:{inv:"Daniel Gonzalez",pases:2},
+  32:{inv:"Alejandro Gonzalez",pases:2},
+  33:{inv:"Alma Gonzalez",pases:2},
+  34:{inv:"Paola Jauregui",pases:2},
+  35:{inv:"Karen Jauregui",pases:2},
+  36:{inv:"Ismael Jauregui",pases:2},
+  37:{inv:"Cristopher Jauregui",pases:2},
+  38:{inv:"Adrian Jauregui",pases:2},
+  39:{inv:"Alejandra Jauregui",pases:2},
+  40:{inv:"Pedro Jauregui",pases:2},
+  41:{inv:"Osmar Jauregui",pases:2},
+  42:{inv:"Rosa Jauregui",pases:2},
+  43:{inv:"Jose Banda",pases:2},
+  44:{inv:"Fernando Banda",pases:2},
+  45:{inv:"Liz Banda",pases:2},
+  46:{inv:"Laura Lopez",pases:1},
+  47:{inv:"Cristina Acosta",pases:2},
+  48:{inv:"Susana Acosta",pases:2},
+  49:{inv:"Fatima Silva",pases:2},
+  50:{inv:"Nancy Acosta",pases:2},
+  51:{inv:"Erasmo Garza",pases:2},
+  52:{inv:"Joel Silva",pases:2},
+  53:{inv:"Geronimo Silva",pases:2},
+  54:{inv:"Rogelio Acosta",pases:1},
+  55:{inv:"Sofia Gonzalez",pases:2},
+  56:{inv:"Juan Alvarado",pases:2},
+  57:{inv:"Argelia Guerrero",pases:1},
+  58:{inv:"Jairo Garza",pases:2},
+  59:{inv:"Gabriel Facio",pases:2},
+  60:{inv:"Arly Aleman",pases:1},
+  61:{inv:"Melanie Saloera",pases:1},
+  62:{inv:"Javier Casas",pases:2},
+  63:{inv:"Selina Galaviz",pases:2},
+  64:{inv:"Fernanda Leura",pases:2},
+  65:{inv:"Alejandra Rivas",pases:2},
+  66:{inv:"Alejandro Arenas",pases:2},
+  67:{inv:"Stefanny Moreno",pases:1},
+  68:{inv:"Azael Reyes",pases:1},
+  69:{inv:"Karen Peralta",pases:2},
+  70:{inv:"Judith Gomez",pases:1},
+  71:{inv:"Karyna Anguiano",pases:2},
+  72:{inv:"Beatriz Criado",pases:2},
+  73:{inv:"Erick Santoy",pases:2},
+  74:{inv:"Hector Lopez",pases:1},
+  75:{inv:"Analy Duran",pases:1},
+  76:{inv:"Tony Olarte",pases:2},
+  77:{inv:"Angel Godinez Silva",pases:2},
+  78:{inv:"Diana Alvarez",pases:2},
+  79:{inv:"Griselda Vazquez",pases:2},
+  80:{inv:"Hector Lara",pases:2},
+  81:{inv:"Eduardo Lara",pases:2},
+  82:{inv:"Luis Jauregui",pases:2},
+  83:{inv:"Alberto Heredia",pases:1},
+};
+let guestInfo=null; // invitado actual (si el enlace trae un id válido)
+
 // 4. INICIALIZACIÓN
 document.addEventListener("DOMContentLoaded",function(){
   document.querySelectorAll('.timeline-section').forEach(s=>s.querySelectorAll('.anim-el').forEach((el,i)=>el.style.transitionDelay=(i*0.12)+'s'));
@@ -672,47 +775,28 @@ document.addEventListener("DOMContentLoaded",function(){
   },{threshold:.12});
   document.querySelectorAll('.anim-el').forEach(el=>observer.observe(el));
 
-  // LISTA DE INVITADOS
-  const listaInvitados={};
-  const p=new URLSearchParams(window.location.search);
-  const guestId=p.get('id');
-  let invitado=p.get('invitado'), pases=p.get('pases')||p.get('p'), nombresStr=p.get('nombres'), nombresArray=[];
-
-  if(guestId&&listaInvitados[guestId]){
-    invitado=listaInvitados[guestId].inv; pases=listaInvitados[guestId].pases; nombresArray=listaInvitados[guestId].nombres;
-  }else if(nombresStr){nombresArray=nombresStr.split(',')}
-
-  if(invitado&&pases){
+  // SISTEMA DE PASES NOMINALES (?id=N)
+  const params=new URLSearchParams(window.location.search);
+  const guestId=(params.get('id')||'').trim();
+  if(Object.prototype.hasOwnProperty.call(listaInvitados,guestId)){
+    guestInfo=Object.assign({id:guestId},listaInvitados[guestId]);
+    const total=guestInfo.pases;
     document.getElementById('paseSection').style.display='block';
-    document.getElementById('guestNameDisplay').textContent=invitado;
-    document.getElementById('guestPassesDisplay').textContent=pases;
-  }else if(pases){
-    document.getElementById('paseSection').style.display='block';
-    document.getElementById('guestNameDisplay').textContent="Pase Especial";
-    document.getElementById('guestPassesDisplay').textContent=pases;
-  }
-
-  if(nombresArray.length>0){
-    const list=document.getElementById('dynamicGuestList');
-    list.innerHTML='';
-    const lbl=document.createElement('label');
-    lbl.setAttribute('style','font-family:var(--font-sans);font-size:.75rem;color:var(--main-dark);margin-bottom:15px;display:block;letter-spacing:2px;font-weight:600');
-    lbl.textContent='SELECCIONA QUIÉNES ASISTEN:';
-    list.appendChild(lbl);
-    nombresArray.forEach((n,i)=>{
-      const row=document.createElement('div');
-      row.setAttribute('style','display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;margin-bottom:15px;padding-bottom:15px;border-bottom:1px solid var(--lilac-dark)');
-      const span=document.createElement('span');
-      span.className='rsvp-name-ext';
-      span.setAttribute('style','font-size:1rem;color:var(--main-dark);flex:1;min-width:120px');
-      span.textContent=n.trim();
-      const radios=document.createElement('div');
-      radios.className='radio-ed-container';
-      radios.style.flexShrink='0';
-      radios.innerHTML=`<label class="radio-ed-label"><input type="radio" name="asistencia_${i}" value="Sí"> Sí</label><label class="radio-ed-label"><input type="radio" name="asistencia_${i}" value="No"> No</label>`;
-      row.appendChild(span); row.appendChild(radios); list.appendChild(row);
-    });
+    document.getElementById('guestNameDisplay').textContent=guestInfo.inv;
+    document.getElementById('guestPassesDisplay').textContent=total;
     document.getElementById('genericRSVPInputs').style.display='none';
+    document.getElementById('cupoRSVPInputs').style.display='block';
+    const sel=document.getElementById('cupoLugares');
+    sel.innerHTML='';
+    for(let i=1;i<=total;i++){
+      const o=document.createElement('option');
+      o.value=i; o.textContent=i+(i===1?' lugar':' lugares');
+      if(i===total)o.selected=true;
+      sel.appendChild(o);
+    }
+    document.getElementById('cupoHint').textContent='Tienes '+total+(total===1?' lugar reservado.':' lugares reservados. Puedes confirmar menos lugares, pero no más.');
+  }else if(guestId){
+    document.getElementById('idNotFound').style.display='block';
   }
 
   // Cuenta regresiva
@@ -729,20 +813,24 @@ document.addEventListener("DOMContentLoaded",function(){
 });
 
 // 5. RSVP
+function onCupoChange(){
+  const resp=document.getElementById('cupoAsistencia').value;
+  const mostrar=resp==='si'&&guestInfo&&guestInfo.pases>1;
+  document.getElementById('cupoLugaresGroup').style.display=mostrar?'block':'none';
+}
 function sendRSVP(){
-  const list=document.getElementById('dynamicGuestList');
   let mensaje="";
-  if(list.children.length>0){
-    let ok=[],no=[],todos=true;
-    list.querySelectorAll('.rsvp-name-ext').forEach((el,i)=>{
-      const o=document.querySelector(`input[name="asistencia_${i}"]:checked`);
-      if(!o)todos=false; else if(o.value==='Sí')ok.push(el.textContent.trim()); else no.push(el.textContent.trim());
-    });
-    if(!todos){alert("Por favor, selecciona si asiste o no cada persona de la lista.");return}
-    const inv=document.getElementById('guestNameDisplay').textContent;
-    mensaje=`¡Hola! Somos la familia / acompañantes de *${inv}* y aquí está nuestra confirmación:\n\n`;
-    if(ok.length)mensaje+=`✅ *Asistirán con gusto:*\n- ${ok.join('\n- ')}\n\n`;
-    if(no.length)mensaje+=`❌ *Lamentablemente no podrán asistir:*\n- ${no.join('\n- ')}\n\n`;
+  if(guestInfo){
+    const resp=document.getElementById('cupoAsistencia').value;
+    const total=guestInfo.pases, inv=guestInfo.inv;
+    if(!resp){alert("Por favor, selecciona tu respuesta.");return}
+    if(resp==='si'){
+      const n=total===1?1:parseInt(document.getElementById('cupoLugares').value,10);
+      if(!Number.isInteger(n)||n<1||n>total){alert("Puedes confirmar de 1 a "+total+" lugares, pero no más de los asignados.");return}
+      mensaje=`¡Hola! Soy *${inv}* (Invitación #${guestInfo.id}).\n\n✅ Confirmo mi asistencia a la boda de Arturo y Diana.\n👥 Lugares confirmados: *${n} de ${total}*\n\n`;
+    }else{
+      mensaje=`¡Hola! Soy *${inv}* (Invitación #${guestInfo.id}).\n\n❌ Lamentablemente ${total===1?'no podré':'no podremos'} asistir a la boda de Arturo y Diana.\n👥 Lugares confirmados: *0 de ${total}*\n\n`;
+    }
   }else{
     const nombre=document.getElementById('rsvpNombre').value.trim(),asis=document.getElementById('rsvpAsistencia').value;
     if(!nombre||!asis){alert("Por favor, completa tu nombre y estado de asistencia.");return}
@@ -755,7 +843,7 @@ function sendRSVP(){
 function sendWishes(){
   const w=document.getElementById('wishesText').value.trim();
   if(!w){alert("Por favor, escribe un mensaje primero.");return}
-  const m=`¡Hola Arturo y Diana! Les dejo este mensaje para su libro de firmas:\n\n"${w}"`;
+  const m=`¡Hola Arturo y Diana! Les dejo este mensaje para su libro de firmas:\n\n"${w}"`+(guestInfo?`\n\n— ${guestInfo.inv}`:'');
   window.open(`https://wa.me/${telefonoWhatsApp}?text=${encodeURIComponent(m)}`,'_blank');
 }
 
