@@ -171,16 +171,17 @@ i.fa-solid,i.fa-regular,i.fa-brands{display:inline-block;line-height:1}
   border-radius:4px;
   box-shadow:0 15px 35px rgba(74,65,56,0.18);
   cursor:pointer;
-  object-fit:cover;
+  object-fit:contain;
+  height:auto;
   transition:rotate .5s var(--ease),scale .5s var(--ease),translate .5s var(--ease),box-shadow .5s var(--ease),opacity 1.2s var(--ease),transform 1.2s var(--ease),filter 1.4s var(--ease);
   z-index:10;
   position:relative;
   display:block;
 }
-.photo-rotate-left{rotate:-3deg}
-.photo-rotate-right{rotate:3deg}
-.photo-rotate-left:hover{rotate:-1deg;scale:1.04;translate:0 -5px;box-shadow:0 25px 45px rgba(74,65,56,0.25);z-index:20}
-.photo-rotate-right:hover{rotate:1deg;scale:1.04;translate:0 -5px;box-shadow:0 25px 45px rgba(74,65,56,0.25);z-index:20}
+/* Mientras carga se reserva espacio 4/5; al cargar, la foto toma su proporción real (horizontal o vertical) */
+.photo-insert.loaded{aspect-ratio:auto;background-color:transparent}
+.photo-rotate-left,.photo-rotate-right{rotate:0deg}
+.photo-rotate-left:hover,.photo-rotate-right:hover{scale:1.03;translate:0 -5px;box-shadow:0 25px 45px rgba(74,65,56,0.25);z-index:20}
 
 /* ===== Estructura de columnas ===== */
 #invitation-content{
@@ -657,6 +658,13 @@ const telefonoWhatsApp="528183961645";
 document.addEventListener("DOMContentLoaded",function(){
   document.querySelectorAll('.timeline-section').forEach(s=>s.querySelectorAll('.anim-el').forEach((el,i)=>el.style.transitionDelay=(i*0.12)+'s'));
   document.querySelectorAll('.parents-section .anim-el').forEach((el,i)=>{if(!el.style.transitionDelay)el.style.transitionDelay=(i*0.2)+'s'});
+
+  // Fotos completas: al cargar cada una, se ajusta a su proporción original
+  document.querySelectorAll('.photo-insert').forEach(img=>{
+    const done=()=>img.classList.add('loaded');
+    if(img.complete&&img.naturalWidth>0)done();
+    else{img.addEventListener('load',done);img.addEventListener('error',done)}
+  });
 
   const observer=new IntersectionObserver(entries=>{
     entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');observer.unobserve(e.target)}});
