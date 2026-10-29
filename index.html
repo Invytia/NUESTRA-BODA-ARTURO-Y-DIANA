@@ -775,16 +775,15 @@ document.addEventListener("DOMContentLoaded",function(){
   },{threshold:.12});
   document.querySelectorAll('.anim-el').forEach(el=>observer.observe(el));
 
-  // SISTEMA DE PASES NOMINALES (?id=N)
+  // SISTEMAS DE PASES INVYTIA: ?id=N (nominal) y ?p=N (numerado)
   const params=new URLSearchParams(window.location.search);
   const guestId=(params.get('id')||'').trim();
-  if(Object.prototype.hasOwnProperty.call(listaInvitados,guestId)){
-    guestInfo=Object.assign({id:guestId},listaInvitados[guestId]);
-    const total=guestInfo.pases;
+  const pNum=(params.get('p')||'').trim();
+
+  // Prepara la confirmación por cupo (se puede confirmar menos lugares, nunca más)
+  function setupCupo(total){
     document.getElementById('paseSection').style.display='block';
-    document.getElementById('guestNameDisplay').textContent=guestInfo.inv;
     document.getElementById('guestPassesDisplay').textContent=total;
-    document.getElementById('genericRSVPInputs').style.display='none';
     document.getElementById('cupoRSVPInputs').style.display='block';
     const sel=document.getElementById('cupoLugares');
     sel.innerHTML='';
@@ -795,6 +794,21 @@ document.addEventListener("DOMContentLoaded",function(){
       sel.appendChild(o);
     }
     document.getElementById('cupoHint').textContent='Tienes '+total+(total===1?' lugar reservado.':' lugares reservados. Puedes confirmar menos lugares, pero no más.');
+  }
+
+  if(Object.prototype.hasOwnProperty.call(listaInvitados,guestId)){
+    // ?id=N -> pase nominal: titular + pases asignados
+    guestInfo=Object.assign({id:guestId},listaInvitados[guestId]);
+    document.getElementById('guestNameDisplay').textContent=guestInfo.inv;
+    document.getElementById('genericRSVPInputs').style.display='none';
+    setupCupo(guestInfo.pases);
+  }else if(/^\d{1,2}$/.test(pNum)&&parseInt(pNum,10)>=1){
+    // ?p=N -> pase numerado: N lugares, sin nombre (el invitado escribe el suyo)
+    const total=parseInt(pNum,10);
+    guestInfo={id:null,inv:null,pases:total};
+    document.getElementById('guestNameDisplay').textContent='Pase Especial';
+    document.getElementById('rsvpAsistencia').closest('.form-group-ed').style.display='none';
+    setupCupo(total);
   }else if(guestId){
     document.getElementById('idNotFound').style.display='block';
   }
@@ -822,14 +836,17 @@ function sendRSVP(){
   let mensaje="";
   if(guestInfo){
     const resp=document.getElementById('cupoAsistencia').value;
-    const total=guestInfo.pases, inv=guestInfo.inv;
+    const total=guestInfo.pases;
+    const inv=guestInfo.inv||document.getElementById('rsvpNombre').value.trim();
+    if(!inv){alert("Por favor, escribe tu nombre completo.");return}
     if(!resp){alert("Por favor, selecciona tu respuesta.");return}
+    const ref=guestInfo.id?`(Invitación #${guestInfo.id})`:`(Pase de ${total} ${total===1?'lugar':'lugares'})`;
     if(resp==='si'){
       const n=total===1?1:parseInt(document.getElementById('cupoLugares').value,10);
       if(!Number.isInteger(n)||n<1||n>total){alert("Puedes confirmar de 1 a "+total+" lugares, pero no más de los asignados.");return}
-      mensaje=`¡Hola! Soy *${inv}* (Invitación #${guestInfo.id}).\n\n✅ Confirmo mi asistencia a la boda de Arturo y Diana.\n👥 Lugares confirmados: *${n} de ${total}*\n\n`;
+      mensaje=`¡Hola! Soy *${inv}* ${ref}.\n\n✅ Confirmo mi asistencia a la boda de Arturo y Diana.\n👥 Lugares confirmados: *${n} de ${total}*\n\n`;
     }else{
-      mensaje=`¡Hola! Soy *${inv}* (Invitación #${guestInfo.id}).\n\n❌ Lamentablemente ${total===1?'no podré':'no podremos'} asistir a la boda de Arturo y Diana.\n👥 Lugares confirmados: *0 de ${total}*\n\n`;
+      mensaje=`¡Hola! Soy *${inv}* ${ref}.\n\n❌ Lamentablemente ${total===1?'no podré':'no podremos'} asistir a la boda de Arturo y Diana.\n👥 Lugares confirmados: *0 de ${total}*\n\n`;
     }
   }else{
     const nombre=document.getElementById('rsvpNombre').value.trim(),asis=document.getElementById('rsvpAsistencia').value;
@@ -843,7 +860,7 @@ function sendRSVP(){
 function sendWishes(){
   const w=document.getElementById('wishesText').value.trim();
   if(!w){alert("Por favor, escribe un mensaje primero.");return}
-  const m=`¡Hola Arturo y Diana! Les dejo este mensaje para su libro de firmas:\n\n"${w}"`+(guestInfo?`\n\n— ${guestInfo.inv}`:'');
+  const m=`¡Hola Arturo y Diana! Les dejo este mensaje para su libro de firmas:\n\n"${w}"`+(guestInfo&&guestInfo.inv?`\n\n— ${guestInfo.inv}`:'');
   window.open(`https://wa.me/${telefonoWhatsApp}?text=${encodeURIComponent(m)}`,'_blank');
 }
 
