@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Boda de Arturo y Diana - Editorial</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,61 +12,74 @@
 <link rel="preload" as="image" href="assets/1.jpg">
 <style>
 :root{
-  --bg-color:#FCFAFD; 
+  --bg-color:#FCFAFD;
   --card:rgba(255, 255, 255, 0.95);
-  --card-2:#F6F0FA; 
+  --card-2:#F6F0FA;
   --white:#FFFFFF;
-  --main-dark:#4A4138; 
-  --text-color:#6B6056; 
-  --gold:#C5A880; 
-  --gold-light:#DFCDAE; 
+  --main-dark:#4A4138;
+  --text-color:#6B6056;
+  --gold:#C5A880;
+  --gold-light:#DFCDAE;
   --lilac:#E2D1F0;
   --lilac-dark:#AC8CD4;
   --ink:#4A4138;
-  --font-title:'Playfair Display',serif; 
+  --font-title:'Playfair Display',serif;
   --font-script:'Great Vibes',cursive;
-  --font-body:'Lora',serif; 
+  --font-body:'Lora',serif;
   --font-sans:'Montserrat',sans-serif;
   --ease:cubic-bezier(.22,1,.36,1);
   --paper-texture: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.18'/%3E%3C/svg%3E");
 }
 *{box-sizing:border-box;margin:0;padding:0}
 
-/* Estructura base - Bloqueo de overflow horizontal estricto */
-html, body {
-  background-color: var(--bg-color);
+/* ===== Base: sin 100vw (incluye scrollbar y descuadra en móvil) ===== */
+html{
+  width:100%;
+  max-width:100%;
+  overflow-x:hidden;
+  -webkit-text-size-adjust:100%;
+  text-size-adjust:100%;
+}
+body{
+  width:100%;
+  max-width:100%;
+  position:relative;
+  overflow-x:hidden;
+  background-color:var(--bg-color);
   color:var(--text-color);
   font-family:var(--font-body);
-  overflow-x:hidden;
-  width: 100vw;
-  max-width: 100%;
+  overflow-wrap:break-word;
+}
+@supports (overflow:clip){
+  body{overflow-x:clip}
 }
 
-body::before {
-  content: "";
-  position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background-image: url('assets/fondo.jpg');
-  background-position: center center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  z-index: -1;
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  background-image:url('assets/fondo.jpg');
+  background-position:center center;
+  background-repeat:no-repeat;
+  background-size:cover;
+  z-index:-1;
 }
 
+img{max-width:100%;height:auto}
 i.fa-solid,i.fa-regular,i.fa-brands{display:inline-block;line-height:1}
 
 /* ===== ANIMACIONES DE ENTRADA ===== */
 .anim-el{opacity:0;will-change:opacity,transform,filter}
 .fade-in-up{transform:translateY(45px);transition:opacity 1.2s var(--ease),transform 1.2s var(--ease)}
 .fade-in-down{transform:translateY(-45px);transition:opacity 1.2s var(--ease),transform 1.2s var(--ease)}
-.fade-in-left{transform:translateX(-50px);transition:opacity 1s var(--ease),transform 1s var(--ease)}
-.fade-in-right{transform:translateX(50px);transition:opacity 1s var(--ease),transform 1s var(--ease)}
+.fade-in-left{transform:translateX(-40px);transition:opacity 1s var(--ease),transform 1s var(--ease)}
+.fade-in-right{transform:translateX(40px);transition:opacity 1s var(--ease),transform 1s var(--ease)}
 .scale-in{transform:scale(.85);transition:opacity 1.4s var(--ease),transform 1.4s var(--ease)}
 .blur-in{filter:blur(14px);transform:translateY(20px);transition:opacity 1.4s var(--ease),filter 1.4s var(--ease),transform 1.4s var(--ease)}
 .rotate-in{transform:rotate(-8deg) scale(.9);transition:opacity 1.3s var(--ease),transform 1.3s var(--ease)}
 .flip-in{transform:perspective(800px) rotateX(35deg) translateY(30px);transform-origin:top;transition:opacity 1.2s var(--ease),transform 1.2s var(--ease)}
 .reveal-text{clip-path:inset(0 100% 0 0);transition:opacity .6s ease,clip-path 1.5s var(--ease)}
-.track-in{letter-spacing:14px;filter:blur(8px);transition:opacity 1.6s var(--ease),letter-spacing 1.8s var(--ease),filter 1.6s var(--ease)}
+.track-in{letter-spacing:10px;filter:blur(8px);transition:opacity 1.6s var(--ease),letter-spacing 1.8s var(--ease),filter 1.6s var(--ease)}
 .fade-in-up.visible,.fade-in-down.visible,.fade-in-left.visible,.fade-in-right.visible,.scale-in.visible,.blur-in.visible,.rotate-in.visible,.flip-in.visible{opacity:1;transform:none;filter:none}
 .reveal-text.visible{opacity:1;clip-path:inset(0 0 0 0)}
 .track-in.visible{opacity:1;letter-spacing:1px;filter:none}
@@ -87,20 +100,23 @@ i.fa-solid,i.fa-regular,i.fa-brands{display:inline-block;line-height:1}
 #envelope-screen{
   position:fixed;
   inset:0;
+  width:100%;
   height:100vh;
-  background-color: var(--bg-color);
-  background-image: url('assets/fondo.jpg');
-  background-position: center center;
-  background-repeat: no-repeat;
-  background-size: cover;
+  height:100dvh;
+  background-color:var(--bg-color);
+  background-image:url('assets/fondo.jpg');
+  background-position:center center;
+  background-repeat:no-repeat;
+  background-size:cover;
   z-index:9999;
   display:flex;
   flex-direction:column;
   align-items:center;
   justify-content:center;
+  overflow:hidden;
   transition:opacity 1s ease,visibility 1s ease;
 }
-.envelope-wrapper{position:relative;width:340px;height:230px;z-index:2;cursor:pointer;perspective:1200px;transition:transform .4s ease;animation:floatY 3.5s ease-in-out infinite}
+.envelope-wrapper{position:relative;width:340px;height:230px;z-index:2;cursor:pointer;perspective:1200px;transition:transform .4s ease;animation:floatY 3.5s ease-in-out infinite;flex-shrink:0}
 .envelope-wrapper:hover{transform:scale(1.05)}
 .envelope-body{position:absolute;inset:0;background:#FFFFFF;border-radius:4px;box-shadow:0 15px 40px rgba(74,65,56,.25);overflow:hidden}
 .envelope-front{position:absolute;inset:0;z-index:3;border-left:170px solid #FDFBF7;border-right:170px solid #FDFBF7;border-bottom:120px solid var(--card-2);border-top:110px solid transparent;pointer-events:none}
@@ -109,101 +125,117 @@ i.fa-solid,i.fa-regular,i.fa-brands{display:inline-block;line-height:1}
 .envelope-wrapper.open{animation:none}
 .envelope-wrapper.open .envelope-flap{transform:rotateX(180deg);z-index:1;filter:none}
 .envelope-wrapper.open .seal{opacity:0}
-.envelope-text{position:relative;z-index:2;color:var(--main-dark);font-family:var(--font-sans);font-size:.85rem;letter-spacing:4px;margin-top:50px;text-transform:uppercase;animation:pulseText 2.5s infinite; background: rgba(255,255,255,0.7); padding: 5px 15px; border-radius: 20px;}
+.envelope-text{position:relative;z-index:2;color:var(--main-dark);font-family:var(--font-sans);font-size:.85rem;letter-spacing:4px;margin-top:50px;text-transform:uppercase;text-align:center;animation:pulseText 2.5s infinite;background:rgba(255,255,255,0.7);padding:5px 15px;border-radius:20px;max-width:90%}
 
 /* Audio */
-#audio-btn{position:fixed;bottom:25px;right:25px;background:var(--lilac);color:var(--main-dark);border:1px solid var(--lilac-dark);border-radius:50%;width:55px;height:55px;font-size:1.2rem;cursor:pointer;z-index:9000;box-shadow:0 4px 15px rgba(0,0,0,.15);transition:all .3s;display:none;align-items:center;justify-content:center}
+#audio-btn{position:fixed;bottom:calc(25px + env(safe-area-inset-bottom,0px));right:calc(25px + env(safe-area-inset-right,0px));background:var(--lilac);color:var(--main-dark);border:1px solid var(--lilac-dark);border-radius:50%;width:55px;height:55px;font-size:1.2rem;cursor:pointer;z-index:9000;box-shadow:0 4px 15px rgba(0,0,0,.15);transition:all .3s;display:none;align-items:center;justify-content:center}
 #audio-btn:hover{transform:scale(1.1);background:var(--lilac-dark);color:var(--white)}
 
 /* ===== LIGHTBOX (Visor de fotos) ===== */
-#lightbox {
-  display: none;
-  position: fixed;
-  z-index: 10000;
-  left: 0; top: 0; width: 100%; height: 100%;
-  background-color: rgba(0,0,0,0.85);
-  backdrop-filter: blur(8px);
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  transition: opacity 0.4s ease;
+#lightbox{
+  display:none;
+  position:fixed;
+  z-index:10000;
+  inset:0;
+  width:100%;
+  height:100%;
+  background-color:rgba(0,0,0,0.85);
+  -webkit-backdrop-filter:blur(8px);
+  backdrop-filter:blur(8px);
+  align-items:center;
+  justify-content:center;
+  opacity:0;
+  transition:opacity 0.4s ease;
 }
-#lightbox.active {
-  display: flex;
-  opacity: 1;
+#lightbox.active{display:flex;opacity:1}
+#lightbox-img{
+  max-width:90%;
+  max-height:85vh;
+  border-radius:6px;
+  box-shadow:0 10px 40px rgba(0,0,0,0.5);
+  transform:scale(0.9);
+  transition:transform 0.4s cubic-bezier(0.22,1,0.36,1);
+  object-fit:contain;
 }
-#lightbox-img {
-  max-width: 90%;
-  max-height: 85vh;
-  border-radius: 6px;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-  transform: scale(0.9);
-  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-  object-fit: contain;
-}
-#lightbox.active #lightbox-img {
-  transform: scale(1);
-}
-.lightbox-close {
-  position: absolute;
-  top: 20px; right: 25px;
-  color: white;
-  font-size: 40px;
-  font-weight: 300;
-  cursor: pointer;
-  z-index: 10001;
-  transition: color 0.3s;
-}
-.lightbox-close:hover { color: var(--gold); }
+#lightbox.active #lightbox-img{transform:scale(1)}
+.lightbox-close{position:absolute;top:20px;right:25px;color:white;font-size:40px;font-weight:300;cursor:pointer;z-index:10001;transition:color 0.3s}
+.lightbox-close:hover{color:var(--gold)}
 
-/* ===== FOTOS "SUELTAS" ===== */
-.photo-insert {
-  width: calc(100% + 40px);
-  aspect-ratio: 4/5;
-  background-color: rgba(172, 140, 212, 0.15);
-  margin: 35px -20px;
-  border-radius: 4px;
-  box-shadow: 0 15px 35px rgba(74,65,56,0.18);
-  cursor: pointer;
-  object-fit: cover;
-  transition: transform 0.5s var(--ease), box-shadow 0.5s var(--ease);
-  z-index: 10;
-  position: relative;
-  display: block;
+/* ===== FOTOS "SUELTAS" (rotación con la propiedad `rotate` para no chocar con las animaciones) ===== */
+.photo-insert{
+  width:calc(100% + 30px);
+  max-width:none;
+  aspect-ratio:4/5;
+  background-color:rgba(172,140,212,0.15);
+  margin:35px -15px;
+  border-radius:4px;
+  box-shadow:0 15px 35px rgba(74,65,56,0.18);
+  cursor:pointer;
+  object-fit:cover;
+  transition:rotate .5s var(--ease),scale .5s var(--ease),translate .5s var(--ease),box-shadow .5s var(--ease),opacity 1.2s var(--ease),transform 1.2s var(--ease),filter 1.4s var(--ease);
+  z-index:10;
+  position:relative;
+  display:block;
 }
-.photo-rotate-left { transform: rotate(-3deg); }
-.photo-rotate-right { transform: rotate(3deg); }
-.photo-rotate-left:hover { transform: rotate(-1deg) scale(1.04) translateY(-5px); box-shadow: 0 25px 45px rgba(74,65,56,0.25); z-index: 20;}
-.photo-rotate-right:hover { transform: rotate(1deg) scale(1.04) translateY(-5px); box-shadow: 0 25px 45px rgba(74,65,56,0.25); z-index: 20;}
+.photo-rotate-left{rotate:-3deg}
+.photo-rotate-right{rotate:3deg}
+.photo-rotate-left:hover{rotate:-1deg;scale:1.04;translate:0 -5px;box-shadow:0 25px 45px rgba(74,65,56,0.25);z-index:20}
+.photo-rotate-right:hover{rotate:1deg;scale:1.04;translate:0 -5px;box-shadow:0 25px 45px rgba(74,65,56,0.25);z-index:20}
 
-/* Estructura de las columnas con textura de papel */
-#invitation-content{display:flex;justify-content:center;padding:25px 15px;visibility:hidden;opacity:0;transition:opacity 1.5s ease; max-width: 100vw; box-sizing: border-box;}
-.invitation-container{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:1200px;width:100%}
+/* ===== Estructura de columnas ===== */
+#invitation-content{
+  display:flex;
+  justify-content:center;
+  width:100%;
+  max-width:100%;
+  padding:25px max(15px,env(safe-area-inset-right,0px)) 25px max(15px,env(safe-area-inset-left,0px));
+  visibility:hidden;
+  opacity:0;
+  transition:opacity 1.5s ease;
+  overflow-x:hidden;
+}
+@supports (overflow:clip){
+  #invitation-content{overflow-x:clip}
+}
+.invitation-container{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr)); /* minmax(0,1fr): la columna NUNCA se ensancha por su contenido */
+  gap:20px;
+  max-width:1200px;
+  width:100%;
+  min-width:0;
+}
 .column{
   display:flex;
   flex-direction:column;
   align-items:center;
+  width:100%;
+  min-width:0;
+  max-width:100%;
   padding:50px 30px;
   text-align:center;
   position:relative;
-  background-color: var(--card);
-  background-image: var(--paper-texture);
+  background-color:var(--card);
+  background-image:var(--paper-texture);
   box-shadow:0 15px 40px rgba(0,0,0,.08);
-  border:1px solid rgba(172,140,212,.3); 
-  border-radius: 4px; 
-  backdrop-filter: blur(5px);
-  max-width: 100%;
+  border:1px solid rgba(172,140,212,.3);
+  border-radius:4px;
+  -webkit-backdrop-filter:blur(5px);
+  backdrop-filter:blur(5px);
+}
+@supports (overflow:clip){
+  .column{overflow-x:clip}
 }
 h1,h2,h3{font-family:var(--font-title);font-weight:400;color:var(--main-dark)}
 .divider{display:flex;align-items:center;justify-content:center;margin:25px 0;color:var(--lilac-dark);width:100%;opacity:.9}
 .divider::before,.divider::after{content:"";height:1px;flex-grow:1;max-width:60px;background:var(--lilac-dark);margin:0 15px;opacity:.5}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--lilac);color:var(--main-dark);padding:14px 28px;text-decoration:none;font-family:var(--font-sans);font-size:.8rem;letter-spacing:2px;font-weight:600;text-transform:uppercase;margin-top:15px;border:1px solid var(--lilac-dark);cursor:pointer;transition:all .3s;border-radius:2px; width: 100%; box-sizing: border-box;}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--lilac);color:var(--main-dark);padding:14px 20px;text-decoration:none;font-family:var(--font-sans);font-size:.8rem;letter-spacing:2px;font-weight:600;text-transform:uppercase;margin-top:15px;border:1px solid var(--lilac-dark);cursor:pointer;transition:background .3s,color .3s,border-color .3s,transform .3s,opacity 1.2s var(--ease);border-radius:2px;width:100%;max-width:100%;box-sizing:border-box;text-align:center}
 .btn:hover{background:var(--gold);color:var(--white);border-color:var(--gold);transform:translateY(-2px)}
 
 /* Bloques */
 .intro-text{font-family:var(--font-sans);font-size:.8rem;letter-spacing:3px;text-transform:uppercase;margin-bottom:20px;color:var(--main-dark);font-weight:500}
-.names-container{display:flex;flex-direction:column;align-items:center;line-height:1;margin:5px 0 15px}
-.names-container span.name{font-family:var(--font-title);font-size:3.8rem;letter-spacing:1px}
+.names-container{display:flex;flex-direction:column;align-items:center;max-width:100%;line-height:1;margin:5px 0 15px}
+.names-container span.name{font-family:var(--font-title);font-size:3.8rem;letter-spacing:1px;max-width:100%}
 .names-container span.ampersand{font-family:var(--font-script);font-size:3.5rem;margin:-10px 0 -15px;color:var(--gold);z-index:2;display:block}
 .welcome-phrase{font-size:.95rem;line-height:1.6;margin:15px 0 25px;font-style:italic}
 .parents-section{margin:30px 0;width:100%}
@@ -211,25 +243,26 @@ h1,h2,h3{font-family:var(--font-title);font-weight:400;color:var(--main-dark)}
 .parents-group h4{font-family:var(--font-sans);font-size:.75rem;letter-spacing:2px;color:var(--lilac-dark);margin-bottom:8px;text-transform:uppercase;font-weight:600}
 .parents-group p{font-size:1rem;line-height:1.7;font-style:italic;color:var(--main-dark)}
 .save-date-title{font-family:var(--font-sans);font-size:.85rem;letter-spacing:3px;margin:30px 0 5px;color:var(--main-dark)}
-.save-date-date{font-family:var(--font-title);font-size:clamp(2.2rem,5vw,3rem);margin-bottom:5px;white-space:nowrap}
+.save-date-date{font-family:var(--font-title);font-size:clamp(1.8rem,5vw,3rem);margin-bottom:5px;max-width:100%}
 .calendar-wrapper{width:100%;max-width:320px;margin:25px auto;font-family:var(--font-sans);font-size:.85rem;color:var(--text-color)}
 .calendar-month{text-transform:uppercase;letter-spacing:3px;margin-bottom:15px;font-weight:500;color:var(--main-dark)}
-.calendar-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center}
+.calendar-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;text-align:center}
 .calendar-header{font-weight:600;color:var(--gold);margin-bottom:10px;font-size:.75rem;border-bottom:1px solid rgba(197,168,128,.3);padding-bottom:5px}
 .calendar-day{padding:8px 0}
 .calendar-day.highlight{background:var(--lilac-dark);color:var(--white);border-radius:50%;font-weight:bold}
 .timer-block{width:100%;margin:30px 0;padding:25px 0;border-top:1px solid rgba(172,140,212,.4);border-bottom:1px solid rgba(172,140,212,.4)}
 #countdown-timer{display:flex;flex-wrap:nowrap;justify-content:space-evenly;width:100%;gap:4px;font-family:var(--font-sans)}
-#countdown-timer span{display:flex;flex-direction:column;font-size:.65rem;letter-spacing:2px;align-items:center}
+#countdown-timer span{display:flex;flex-direction:column;font-size:.65rem;letter-spacing:2px;align-items:center;min-width:0}
 #countdown-timer b{font-size:1.6rem;color:var(--main-dark);font-weight:400;font-family:var(--font-title);line-height:1;margin-bottom:5px}
 
-/* Ubicación (Tarjeta interior con textura) */
+/* Ubicación */
 .venue-card{
   width:100%;margin-bottom:40px;
   background-color:var(--card-2);
-  background-image: var(--paper-texture);
-  padding:30px 20px;border-radius:2px;box-shadow:0 5px 15px rgba(0,0,0,.03);border:1px solid rgba(172,140,212,.3);transition:transform .4s;
-  box-sizing: border-box;
+  background-image:var(--paper-texture);
+  padding:30px 20px;border-radius:2px;box-shadow:0 5px 15px rgba(0,0,0,.03);border:1px solid rgba(172,140,212,.3);
+  transition:transform .4s,opacity 1.2s var(--ease);
+  box-sizing:border-box;
 }
 .venue-card:hover{transform:translateY(-5px)}
 .venue-icon{font-size:2rem;color:var(--gold);margin:0 8px 15px}
@@ -249,12 +282,12 @@ h1,h2,h3{font-family:var(--font-title);font-weight:400;color:var(--main-dark)}
 .timeline-time{font-family:var(--font-sans);font-weight:600;font-size:.95rem;color:var(--gold);letter-spacing:1px}
 .timeline-event{font-family:var(--font-title);font-size:1.15rem;color:var(--main-dark);margin-top:2px;text-transform:uppercase;letter-spacing:.5px}
 
-/* Vestimenta (Caja con textura + gradiente) */
+/* Vestimenta */
 .dress-code-box{
-  background-image: var(--paper-texture), linear-gradient(135deg,var(--lilac) 0%,var(--card-2) 100%);
+  background-image:var(--paper-texture),linear-gradient(135deg,var(--lilac) 0%,var(--card-2) 100%);
   color:var(--main-dark);
   width:calc(100% + 60px);margin:0 -30px 40px;padding:50px 30px;border-top:1px solid rgba(172,140,212,.5);border-bottom:1px solid rgba(172,140,212,.5);box-shadow:inset 0 0 30px rgba(0,0,0,.02);
-  box-sizing: border-box;
+  box-sizing:border-box;
 }
 .dress-icons{display:flex;justify-content:center;align-items:flex-end;gap:28px;margin-bottom:15px;color:var(--main-dark);font-size:2.2rem}
 .dress-icons i{animation:floatY 3.5s ease-in-out infinite}
@@ -262,21 +295,23 @@ h1,h2,h3{font-family:var(--font-title);font-weight:400;color:var(--main-dark)}
 .dress-icons svg{display:block}
 .dress-code-title{font-family:var(--font-sans);font-size:.8rem;letter-spacing:4px;margin-bottom:15px;color:var(--text-color);font-weight:600}
 .dress-code-main{font-size:2.8rem;margin-bottom:10px;line-height:1.1;color:var(--main-dark)}
-.no-kids-block{padding:25px;width:100%;border-top:1px solid rgba(172,140,212,.4);border-bottom:1px solid rgba(172,140,212,.4);margin-bottom:40px; box-sizing: border-box;}
+.no-kids-block{padding:25px;width:100%;border-top:1px solid rgba(172,140,212,.4);border-bottom:1px solid rgba(172,140,212,.4);margin-bottom:40px;box-sizing:border-box}
 
-/* Formularios (Tarjeta interior con textura) */
+/* Formularios */
 .editorial-form-box{
   width:100%;
   background-color:var(--card-2);
-  background-image: var(--paper-texture);
+  background-image:var(--paper-texture);
   padding:40px 30px;border-radius:2px;border:1px solid rgba(172,140,212,.4);box-shadow:0 10px 30px rgba(0,0,0,.04);margin-top:20px;
-  box-sizing: border-box;
+  box-sizing:border-box;
 }
 .rsvp-header{font-size:2rem;margin-bottom:5px;color:var(--main-dark)}
-.rsvp-subtitle{font-family:var(--font-sans);font-size:.75rem;letter-spacing:3px;color:var(--lilac-dark);margin-bottom:30px;text-transform:uppercase;font-weight: 600;}
+.rsvp-subtitle{font-family:var(--font-sans);font-size:.75rem;letter-spacing:3px;color:var(--lilac-dark);margin-bottom:30px;text-transform:uppercase;font-weight:600}
 .form-group-ed{margin-bottom:25px;text-align:left}
 .form-group-ed label{display:block;font-family:var(--font-sans);font-size:.75rem;color:var(--main-dark);margin-bottom:8px;letter-spacing:2px;text-transform:uppercase;font-weight:600}
-.form-group-ed input[type="text"],.form-group-ed select,.form-group-ed textarea{width:100%;padding:10px 0;background:transparent;border:none;border-bottom:1px solid var(--lilac-dark);border-radius:0;font-family:var(--font-body);font-size:1rem;color:var(--main-dark);outline:none;transition:all .3s}
+/* font-size 16px evita el zoom automático de iOS al enfocar los campos */
+.form-group-ed input[type="text"],.form-group-ed select,.form-group-ed textarea{width:100%;padding:10px 0;background:transparent;border:none;border-bottom:1px solid var(--lilac-dark);border-radius:0;font-family:var(--font-body);font-size:16px;color:var(--main-dark);outline:none;transition:all .3s;-webkit-appearance:none;appearance:none}
+.form-group-ed select{background-image:none}
 .form-group-ed select option{background:#FFFFFF;color:var(--main-dark)}
 .form-group-ed input:focus,.form-group-ed select:focus,.form-group-ed textarea:focus{border-bottom-color:var(--gold)}
 #paseSection{padding-bottom:20px;border-bottom:1px dashed rgba(172,140,212,.6);margin-bottom:25px}
@@ -287,7 +322,7 @@ h1,h2,h3{font-family:var(--font-title);font-weight:400;color:var(--main-dark)}
 .radio-ed-label{display:flex;align-items:center;gap:8px;cursor:pointer;font-size:.95rem;color:var(--main-dark)}
 .radio-ed-label input[type="radio"]{accent-color:var(--lilac-dark)}
 
-.footer-editorial{width:100%;text-align:center;padding:40px 20px;border-top:1px solid rgba(172,140,212,.4);margin-top:40px; background: rgba(255,255,255,0.7);}
+.footer-editorial{width:100%;text-align:center;padding:40px 20px calc(40px + env(safe-area-inset-bottom,0px));border-top:1px solid rgba(172,140,212,.4);margin-top:40px;background:rgba(255,255,255,0.7);overflow:hidden}
 .footer-editorial p{font-family:var(--font-sans);font-size:.6rem;letter-spacing:5px;color:var(--gold);text-transform:uppercase;font-weight:600}
 
 /* Brillo en títulos */
@@ -300,27 +335,41 @@ h2:not(.dress-code-main),.names-container span.name,.save-date-date{
   animation:shineSweep 5s linear infinite;
 }
 
-/* ===== OPTIMIZACIÓN ESTRICTA PARA CELULARES (Evita desbordamiento horizontal) ===== */
+/* ===== RESPONSIVO ===== */
 @media(max-width:992px){
-  .invitation-container{grid-template-columns:1fr}
+  .invitation-container{grid-template-columns:minmax(0,1fr);max-width:560px}
 }
 @media(max-width:768px){
-  #invitation-content { padding: 15px 12px; } /* Ajuste del espacio contra los bordes de la pantalla */
-  .column { padding: 40px 20px; } /* Reducción de padding lateral para liberar espacio */
-  
-  /* Ajuste preciso de márgenes negativos para que no se salgan de la pantalla */
-  .photo-insert { width: calc(100% + 24px); margin: 30px -12px; }
-  .dress-code-box { width: calc(100% + 40px); margin: 0 -20px 40px; padding: 40px 20px; }
-  
-  /* Ajuste de fuentes para que luzcan elegantes pero no rompan el contenedor */
-  .names-container span.name { font-size: 3.2rem; }
-  .names-container span.ampersand { font-size: 3rem; margin: -5px 0 -10px; }
-  .save-date-date { font-size: 2.3rem; }
-  .dress-code-main { font-size: 2.4rem; }
-  .venue-name { font-size: 1.6rem; }
-  #countdown-timer b { font-size: 1.4rem; }
-  
-  .editorial-form-box, .venue-card { padding: 30px 15px; }
+  #invitation-content{padding-top:15px;padding-bottom:15px;padding-left:max(10px,env(safe-area-inset-left,0px));padding-right:max(10px,env(safe-area-inset-right,0px))}
+  .column{padding:40px 20px}
+
+  /* Márgenes negativos exactos = padding de la columna menos un respiro para la rotación */
+  .photo-insert{width:calc(100% + 16px);margin:30px -8px}
+  .dress-code-box{width:calc(100% + 40px);margin:0 -20px 40px;padding:40px 20px}
+
+  /* Animaciones más cortas y menos letter-spacing inicial: nada se sale de la pantalla */
+  .fade-in-left{transform:translateX(-24px)}
+  .fade-in-right{transform:translateX(24px)}
+  .track-in{letter-spacing:3px}
+
+  .names-container span.name{font-size:clamp(2.4rem,12vw,3.2rem)}
+  .names-container span.ampersand{font-size:clamp(2.4rem,11vw,3rem);margin:-5px 0 -10px}
+  .save-date-date{font-size:clamp(1.7rem,8.5vw,2.3rem)}
+  .dress-code-main{font-size:2.4rem}
+  .venue-name{font-size:1.6rem}
+  #countdown-timer b{font-size:1.4rem}
+  #countdown-timer span{letter-spacing:1px}
+  .editorial-form-box,.venue-card{padding:30px 15px}
+  .no-kids-block{padding:20px 15px}
+  .btn{letter-spacing:1.5px;font-size:.75rem;padding:14px 12px}
+}
+@media(max-width:380px){
+  .envelope-wrapper{scale:.85}
+  .envelope-text{letter-spacing:3px;font-size:.78rem}
+  .column{padding:34px 16px}
+  .dress-code-box{width:calc(100% + 32px);margin:0 -16px 40px}
+  .dress-code-main{font-size:2.1rem}
+  .rsvp-header{font-size:1.7rem}
 }
 
 @media(prefers-reduced-motion:reduce){.anim-el{opacity:1!important;transform:none!important;filter:none!important;clip-path:none!important;letter-spacing:inherit}*{animation:none!important}}
@@ -334,19 +383,19 @@ h2:not(.dress-code-main),.names-container span.name,.save-date-date{
   <img id="lightbox-img" src="" alt="Ampliación">
 </div>
 
-<audio id="bg-audio" loop><source src="assets/song.mp3" type="audio/mpeg"></audio>
+<audio id="bg-audio" loop preload="none"><source src="assets/song.mp3" type="audio/mpeg"></audio>
 
 <!-- SOBRE -->
 <div id="envelope-screen">
   <div class="envelope-wrapper" onclick="openInvitation()">
     <div class="envelope-front"></div>
-    <div class="envelope-flap"><div class="seal">A&D</div></div>
+    <div class="envelope-flap"><div class="seal">A&amp;D</div></div>
     <div class="envelope-body"></div>
   </div>
   <div class="envelope-text">Toca para abrir</div>
 </div>
 
-<button id="audio-btn" onclick="toggleAudio()"><i class="fa-solid fa-music" id="audio-icon"></i></button>
+<button id="audio-btn" onclick="toggleAudio()" aria-label="Música"><i class="fa-solid fa-music" id="audio-icon"></i></button>
 
 <div id="invitation-content">
 <div class="invitation-container">
@@ -359,7 +408,7 @@ h2:not(.dress-code-main),.names-container span.name,.save-date-date{
       <span class="ampersand anim-el rotate-in" style="transition-delay:.5s">y</span>
       <span class="name anim-el track-in" style="transition-delay:.9s">DIANA</span>
     </div>
-    
+
     <!-- FOTO 1 -->
     <img src="assets/1.jpg" class="photo-insert photo-rotate-left anim-el scale-in" onclick="openLightbox(this.src)" alt="Foto de Arturo y Diana" fetchpriority="high">
 
@@ -386,7 +435,7 @@ h2:not(.dress-code-main),.names-container span.name,.save-date-date{
 
     <div class="divider anim-el scale-in"><i class="fa-solid fa-heart" style="font-size:.7rem"></i></div>
 
-    <div>
+    <div style="max-width:100%">
       <p class="save-date-title anim-el fade-in-down">RESERVA LA FECHA</p>
       <div class="save-date-date anim-el track-in">13 &bull; 12 &bull; 2026</div>
       <p class="intro-text anim-el fade-in-up">DOMINGO</p>
@@ -422,7 +471,7 @@ h2:not(.dress-code-main),.names-container span.name,.save-date-date{
 
   <!-- ===== COLUMNA 2 ===== -->
   <div class="column">
-    
+
     <!-- FOTO 4 -->
     <img src="assets/4.jpg" loading="lazy" decoding="async" class="photo-insert photo-rotate-right anim-el scale-in" onclick="openLightbox(this.src)" alt="Foto de Arturo y Diana">
 
@@ -435,11 +484,11 @@ h2:not(.dress-code-main),.names-container span.name,.save-date-date{
       <h3 class="venue-name">Fuentes Platinum Eventos</h3>
       <p class="venue-time" style="margin-bottom: 5px;"><i class="fa-solid fa-ring" style="color:var(--gold); font-size: .9rem;"></i> Ceremonia Civil: 6:00 P.M.</p>
       <p class="venue-time"><i class="fa-regular fa-clock" style="color:var(--gold); font-size: .9rem;"></i> Recepción: 7:00 P.M.</p>
-      
+
       <div class="map-iframe-container" style="margin-top: 15px;">
-        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3906.0086078215927!2d-100.2928491!3d25.784025099999994!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x866293b54d57f357%3A0xd9f41d92a51754a7!2sFuentes%20Platinum%20Eventos!5e1!3m2!1ses-419!2smx!4v1791666851913!5m2!1ses-419!2smx" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+        <iframe title="Mapa de Fuentes Platinum Eventos" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3906.0086078215927!2d-100.2928491!3d25.784025099999994!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x866293b54d57f357%3A0xd9f41d92a51754a7!2sFuentes%20Platinum%20Eventos!5e1!3m2!1ses-419!2smx!4v1791666851913!5m2!1ses-419!2smx" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
       </div>
-      <a href="https://maps.app.goo.gl/ksDdHJdEjB3PU32bA?g_st=ic" target="_blank" class="btn"><i class="fa-solid fa-location-dot"></i> UBICACIÓN EXACTA</a>
+      <a href="https://maps.app.goo.gl/ksDdHJdEjB3PU32bA?g_st=ic" target="_blank" rel="noopener" class="btn"><i class="fa-solid fa-location-dot"></i> UBICACIÓN EXACTA</a>
     </div>
 
     <!-- FOTO 5 -->
@@ -454,18 +503,18 @@ h2:not(.dress-code-main),.names-container span.name,.save-date-date{
       <div class="timeline-item anim-el fade-in-left"><div class="timeline-icon"><i class="fa-solid fa-utensils"></i></div><div><div class="timeline-time">08:00 P.M.</div><div class="timeline-event">Banquete</div></div></div>
       <div class="timeline-item anim-el fade-in-left"><div class="timeline-icon"><i class="fa-solid fa-music"></i></div><div><div class="timeline-time">09:30 P.M.</div><div class="timeline-event">¡Abrimos pista!</div></div></div>
     </div>
-    
+
     <!-- FOTO 6 -->
     <img src="assets/6.jpg" loading="lazy" decoding="async" class="photo-insert photo-rotate-right anim-el fade-in-up" onclick="openLightbox(this.src)" alt="Foto de Arturo y Diana">
-    
+
   </div>
 
   <!-- ===== COLUMNA 3 ===== -->
   <div class="column">
-    
+
     <!-- FOTO 7 -->
     <img src="assets/7.jpg" loading="lazy" decoding="async" class="photo-insert photo-rotate-left anim-el fade-in-down" onclick="openLightbox(this.src)" alt="Foto de Arturo y Diana">
-    
+
     <div class="dress-code-box anim-el scale-in" style="margin-top: 10px;">
       <div class="dress-icons">
         <i class="fa-solid fa-user-tie"></i>
@@ -490,7 +539,7 @@ h2:not(.dress-code-main),.names-container span.name,.save-date-date{
 
     <div class="no-kids-block anim-el blur-in">
       <p style="font-size:1rem;font-style:italic;line-height:1.6;text-align:center">
-        <i class="fa-solid fa-user-group" style="color:var(--gold);font-size:1.5rem;display:block;margin-bottom:12px"></i>
+        <i class="fa-solid fa-user-group" style="color:var(--gold);font-size:1.5rem;display:block;margin:0 auto 12px"></i>
         Queremos que esta velada sea una escapada especial <b style="color:var(--main-dark)">solo para los adultos</b>, agradecemos profundamente su comprensión.
       </p>
     </div>
@@ -498,12 +547,12 @@ h2:not(.dress-code-main),.names-container span.name,.save-date-date{
     <h2 class="anim-el track-in" style="font-size:2rem;margin-top:20px">MÚSICA</h2>
     <div class="divider anim-el scale-in"><i class="fa-brands fa-spotify" style="font-size:.9rem"></i></div>
     <p class="anim-el blur-in" style="font-size:.95rem;line-height:1.6;margin-bottom:25px">Ayúdanos a crear el ambiente perfecto agregando tus canciones favoritas a nuestra playlist.</p>
-    
+
     <div class="anim-el fade-in-up" style="width:100%; margin-bottom: 15px;">
-      <iframe data-testid="embed-iframe" style="border-radius:12px; border: 1px solid rgba(172,140,212,.4);" src="https://open.spotify.com/embed/playlist/5JYfmkScv2RMCFEBvm7BBJ?utm_source=generator&si=ac8a924d22b34fd6" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+      <iframe title="Playlist de Spotify" data-testid="embed-iframe" style="border-radius:12px; border: 1px solid rgba(172,140,212,.4); max-width:100%;" src="https://open.spotify.com/embed/playlist/5JYfmkScv2RMCFEBvm7BBJ?utm_source=generator&si=ac8a924d22b34fd6" width="100%" height="352" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
     </div>
-    
-    <a href="https://open.spotify.com/playlist/5JYfmkScv2RMCFEBvm7BBJ?si=5373c03954fd46ae&pt=9e66ead9e1841d189553e6eb2534e878" target="_blank" class="btn anim-el flip-in"><i class="fa-solid fa-music"></i> AGREGAR CANCIONES</a>
+
+    <a href="https://open.spotify.com/playlist/5JYfmkScv2RMCFEBvm7BBJ?si=5373c03954fd46ae&pt=9e66ead9e1841d189553e6eb2534e878" target="_blank" rel="noopener" class="btn anim-el flip-in"><i class="fa-solid fa-music"></i> AGREGAR CANCIONES</a>
 
     <!-- FOTO 9 -->
     <img src="assets/9.jpg" loading="lazy" decoding="async" class="photo-insert photo-rotate-left anim-el scale-in" onclick="openLightbox(this.src)" alt="Foto de Arturo y Diana">
@@ -511,7 +560,7 @@ h2:not(.dress-code-main),.names-container span.name,.save-date-date{
     <h2 class="anim-el track-in" style="font-size:2rem;margin-top:50px">GALERÍA EN VIVO</h2>
     <div class="divider anim-el scale-in"><i class="fa-solid fa-camera-retro" style="font-size:.9rem"></i></div>
     <p class="anim-el blur-in" style="font-size:.95rem;line-height:1.6">¡Queremos ver la boda a través de tus ojos! Comparte tus fotos y videos con nosotros.</p>
-    <a href="https://drive.google.com/drive/folders/1Ygk8CHUwRJePyZ05hiStbZYgsEdYSfyT?usp=sharing" target="_blank" class="btn anim-el fade-in-up" style="margin-top:25px"><i class="fa-solid fa-cloud-arrow-up"></i> SUBIR MIS FOTOS</a>
+    <a href="https://drive.google.com/drive/folders/1Ygk8CHUwRJePyZ05hiStbZYgsEdYSfyT?usp=sharing" target="_blank" rel="noopener" class="btn anim-el fade-in-up" style="margin-top:25px"><i class="fa-solid fa-cloud-arrow-up"></i> SUBIR MIS FOTOS</a>
 
     <!-- FOTO 10 -->
     <img src="assets/10.jpg" loading="lazy" decoding="async" class="photo-insert photo-rotate-right anim-el blur-in" onclick="openLightbox(this.src)" alt="Foto de Arturo y Diana">
@@ -533,8 +582,8 @@ h2:not(.dress-code-main),.names-container span.name,.save-date-date{
 
       <form id="rsvpForm" onsubmit="return false">
         <div id="genericRSVPInputs">
-          <div class="form-group-ed"><label>Nombre del Titular:</label><input type="text" id="rsvpNombre" placeholder="Escribe tu nombre completo"></div>
-          <div class="form-group-ed"><label>Respuesta:</label>
+          <div class="form-group-ed"><label for="rsvpNombre">Nombre del Titular:</label><input type="text" id="rsvpNombre" placeholder="Escribe tu nombre completo"></div>
+          <div class="form-group-ed"><label for="rsvpAsistencia">Respuesta:</label>
             <select id="rsvpAsistencia">
               <option value="">Selecciona una opción</option>
               <option value="¡Sí, asistiré con gusto!">¡Sí, asistiré con gusto!</option>
@@ -572,9 +621,11 @@ function openInvitation(){
   if(envelopeOpened)return; envelopeOpened=true;
   const screen=document.getElementById('envelope-screen'),content=document.getElementById('invitation-content');
   document.querySelector('.envelope-wrapper').classList.add('open');
-  audio.play().then(()=>{audioIcon.classList.replace('fa-music','fa-pause')}).catch(e=>console.log("Auto-play prevenido",e));
+  const pr=audio.play();
+  if(pr&&pr.then){pr.then(()=>{audioIcon.classList.replace('fa-music','fa-pause')}).catch(e=>console.log("Auto-play prevenido",e))}
   setTimeout(()=>{
     screen.style.opacity='0'; content.style.visibility='visible'; content.style.opacity='1'; audioBtn.style.display='flex';
+    window.scrollTo(0,0);
     setTimeout(()=>{screen.style.display='none'},1000);
   },900);
 }
@@ -586,24 +637,20 @@ function toggleAudio(){
 // 2. LIGHTBOX DE IMÁGENES
 function openLightbox(src) {
   const lb = document.getElementById('lightbox');
-  const img = document.getElementById('lightbox-img');
-  img.src = src;
+  document.getElementById('lightbox-img').src = src;
   lb.style.display = 'flex';
   setTimeout(() => lb.classList.add('active'), 10);
 }
 function closeLightbox() {
   const lb = document.getElementById('lightbox');
   lb.classList.remove('active');
-  setTimeout(() => lb.style.display = 'none', 400);
+  setTimeout(() => { lb.style.display = 'none'; }, 400);
 }
-// Cerrar el lightbox al hacer clic en el fondo oscuro
-document.getElementById('lightbox').addEventListener('click', function(e) {
-  if (e.target !== document.getElementById('lightbox-img')) {
-    closeLightbox();
-  }
+document.addEventListener('keydown', function(e){
+  if (e.key === 'Escape') closeLightbox();
 });
 
-// 3. WHATSAPP 
+// 3. WHATSAPP
 const telefonoWhatsApp="528183961645";
 
 // 4. INICIALIZACIÓN
@@ -637,16 +684,25 @@ document.addEventListener("DOMContentLoaded",function(){
   }
 
   if(nombresArray.length>0){
-    let html=`<label style="font-family:var(--font-sans);font-size:.75rem;color:var(--main-dark);margin-bottom:15px;display:block;letter-spacing:2px;font-weight:600">SELECCIONA QUIÉNES ASISTEN:</label>`;
+    const list=document.getElementById('dynamicGuestList');
+    list.innerHTML='';
+    const lbl=document.createElement('label');
+    lbl.setAttribute('style','font-family:var(--font-sans);font-size:.75rem;color:var(--main-dark);margin-bottom:15px;display:block;letter-spacing:2px;font-weight:600');
+    lbl.textContent='SELECCIONA QUIÉNES ASISTEN:';
+    list.appendChild(lbl);
     nombresArray.forEach((n,i)=>{
-      html+=`<div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;margin-bottom:15px;padding-bottom:15px;border-bottom:1px solid var(--lilac-dark)">
-        <span class="rsvp-name-ext" style="font-size:1rem;color:var(--main-dark);flex:1;min-width:120px">${n.trim()}</span>
-        <div class="radio-ed-container" style="flex-shrink:0">
-          <label class="radio-ed-label"><input type="radio" name="asistencia_${i}" value="Sí"> Sí</label>
-          <label class="radio-ed-label"><input type="radio" name="asistencia_${i}" value="No"> No</label>
-        </div></div>`;
+      const row=document.createElement('div');
+      row.setAttribute('style','display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;margin-bottom:15px;padding-bottom:15px;border-bottom:1px solid var(--lilac-dark)');
+      const span=document.createElement('span');
+      span.className='rsvp-name-ext';
+      span.setAttribute('style','font-size:1rem;color:var(--main-dark);flex:1;min-width:120px');
+      span.textContent=n.trim();
+      const radios=document.createElement('div');
+      radios.className='radio-ed-container';
+      radios.style.flexShrink='0';
+      radios.innerHTML=`<label class="radio-ed-label"><input type="radio" name="asistencia_${i}" value="Sí"> Sí</label><label class="radio-ed-label"><input type="radio" name="asistencia_${i}" value="No"> No</label>`;
+      row.appendChild(span); row.appendChild(radios); list.appendChild(row);
     });
-    document.getElementById('dynamicGuestList').innerHTML=html;
     document.getElementById('genericRSVPInputs').style.display='none';
   }
 
@@ -694,12 +750,24 @@ function sendWishes(){
   window.open(`https://wa.me/${telefonoWhatsApp}?text=${encodeURIComponent(m)}`,'_blank');
 }
 
-// 7. ICS
+// 7. ICS (13 dic 2026, 6:00 PM hora de México = 00:00 UTC del 14 dic)
 function downloadICS(){
-  const cal=`BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//Boda Arturo y Diana//ES\nBEGIN:VEVENT\nDTSTART:20261214T000000Z\nDTEND:20261214T070000Z\nSUMMARY:Boda de Arturo y Diana\nLOCATION:Fuentes Platinum Eventos\nDESCRIPTION:¡Acompáñanos a celebrar nuestra boda! Ceremonia a las 6:00 PM en Fuentes Platinum Eventos.\nEND:VEVENT\nEND:VCALENDAR`;
-  const url=URL.createObjectURL(new Blob([cal],{type:'text/calendar;charset=utf-8'}));
+  const now=new Date().toISOString().replace(/[-:]/g,'').split('.')[0]+'Z';
+  const lines=[
+    'BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Boda Arturo y Diana//ES','CALSCALE:GREGORIAN',
+    'BEGIN:VEVENT',
+    'UID:boda-arturo-diana-20261213@invytia',
+    'DTSTAMP:'+now,
+    'DTSTART:20261214T000000Z','DTEND:20261214T070000Z',
+    'SUMMARY:Boda de Arturo y Diana',
+    'LOCATION:Fuentes Platinum Eventos',
+    'DESCRIPTION:¡Acompáñanos a celebrar nuestra boda! Ceremonia a las 6:00 PM en Fuentes Platinum Eventos.',
+    'END:VEVENT','END:VCALENDAR'
+  ];
+  const url=URL.createObjectURL(new Blob([lines.join('\r\n')],{type:'text/calendar;charset=utf-8'}));
   const a=document.createElement('a');a.href=url;a.download='Boda_Arturo_y_Diana.ics';
   document.body.appendChild(a);a.click();document.body.removeChild(a);
+  setTimeout(()=>URL.revokeObjectURL(url),1000);
 }
 </script>
 </body>
