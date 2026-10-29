@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Boda de Arturo y Diana - Editorial</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -32,12 +32,14 @@
 }
 *{box-sizing:border-box;margin:0;padding:0}
 
-/* Estructura base */
-body{
+/* Estructura base - Bloqueo de overflow horizontal estricto */
+html, body {
   background-color: var(--bg-color);
   color:var(--text-color);
   font-family:var(--font-body);
   overflow-x:hidden;
+  width: 100vw;
+  max-width: 100%;
 }
 
 body::before {
@@ -154,11 +156,11 @@ i.fa-solid,i.fa-regular,i.fa-brands{display:inline-block;line-height:1}
 }
 .lightbox-close:hover { color: var(--gold); }
 
-/* ===== FOTOS "SUELTAS" CON ESPACIO RESERVADO PARA EVITAR GLITCHES ===== */
+/* ===== FOTOS "SUELTAS" ===== */
 .photo-insert {
   width: calc(100% + 40px);
-  aspect-ratio: 4/5; /* RESERVA ESPACIO PARA FOTOS VERTICALES */
-  background-color: rgba(172, 140, 212, 0.15); /* Color sutil mientras carga la foto */
+  aspect-ratio: 4/5;
+  background-color: rgba(172, 140, 212, 0.15);
   margin: 35px -20px;
   border-radius: 4px;
   box-shadow: 0 15px 35px rgba(74,65,56,0.18);
@@ -175,8 +177,8 @@ i.fa-solid,i.fa-regular,i.fa-brands{display:inline-block;line-height:1}
 .photo-rotate-right:hover { transform: rotate(1deg) scale(1.04) translateY(-5px); box-shadow: 0 25px 45px rgba(74,65,56,0.25); z-index: 20;}
 
 /* Estructura de las columnas con textura de papel */
-#invitation-content{display:flex;justify-content:center;padding:20px 10px;visibility:hidden;opacity:0;transition:opacity 1.5s ease}
-.invitation-container{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;max-width:1200px;width:100%}
+#invitation-content{display:flex;justify-content:center;padding:25px 15px;visibility:hidden;opacity:0;transition:opacity 1.5s ease; max-width: 100vw; box-sizing: border-box;}
+.invitation-container{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:1200px;width:100%}
 .column{
   display:flex;
   flex-direction:column;
@@ -190,11 +192,12 @@ i.fa-solid,i.fa-regular,i.fa-brands{display:inline-block;line-height:1}
   border:1px solid rgba(172,140,212,.3); 
   border-radius: 4px; 
   backdrop-filter: blur(5px);
+  max-width: 100%;
 }
 h1,h2,h3{font-family:var(--font-title);font-weight:400;color:var(--main-dark)}
 .divider{display:flex;align-items:center;justify-content:center;margin:25px 0;color:var(--lilac-dark);width:100%;opacity:.9}
 .divider::before,.divider::after{content:"";height:1px;flex-grow:1;max-width:60px;background:var(--lilac-dark);margin:0 15px;opacity:.5}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--lilac);color:var(--main-dark);padding:14px 28px;text-decoration:none;font-family:var(--font-sans);font-size:.8rem;letter-spacing:2px;font-weight:600;text-transform:uppercase;margin-top:15px;border:1px solid var(--lilac-dark);cursor:pointer;transition:all .3s;border-radius:2px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--lilac);color:var(--main-dark);padding:14px 28px;text-decoration:none;font-family:var(--font-sans);font-size:.8rem;letter-spacing:2px;font-weight:600;text-transform:uppercase;margin-top:15px;border:1px solid var(--lilac-dark);cursor:pointer;transition:all .3s;border-radius:2px; width: 100%; box-sizing: border-box;}
 .btn:hover{background:var(--gold);color:var(--white);border-color:var(--gold);transform:translateY(-2px)}
 
 /* Bloques */
@@ -225,7 +228,8 @@ h1,h2,h3{font-family:var(--font-title);font-weight:400;color:var(--main-dark)}
   width:100%;margin-bottom:40px;
   background-color:var(--card-2);
   background-image: var(--paper-texture);
-  padding:30px 20px;border-radius:2px;box-shadow:0 5px 15px rgba(0,0,0,.03);border:1px solid rgba(172,140,212,.3);transition:transform .4s
+  padding:30px 20px;border-radius:2px;box-shadow:0 5px 15px rgba(0,0,0,.03);border:1px solid rgba(172,140,212,.3);transition:transform .4s;
+  box-sizing: border-box;
 }
 .venue-card:hover{transform:translateY(-5px)}
 .venue-icon{font-size:2rem;color:var(--gold);margin:0 8px 15px}
@@ -249,7 +253,8 @@ h1,h2,h3{font-family:var(--font-title);font-weight:400;color:var(--main-dark)}
 .dress-code-box{
   background-image: var(--paper-texture), linear-gradient(135deg,var(--lilac) 0%,var(--card-2) 100%);
   color:var(--main-dark);
-  width:calc(100% + 60px);margin:0 -30px 40px;padding:50px 30px;border-top:1px solid rgba(172,140,212,.5);border-bottom:1px solid rgba(172,140,212,.5);box-shadow:inset 0 0 30px rgba(0,0,0,.02)
+  width:calc(100% + 60px);margin:0 -30px 40px;padding:50px 30px;border-top:1px solid rgba(172,140,212,.5);border-bottom:1px solid rgba(172,140,212,.5);box-shadow:inset 0 0 30px rgba(0,0,0,.02);
+  box-sizing: border-box;
 }
 .dress-icons{display:flex;justify-content:center;align-items:flex-end;gap:28px;margin-bottom:15px;color:var(--main-dark);font-size:2.2rem}
 .dress-icons i{animation:floatY 3.5s ease-in-out infinite}
@@ -257,14 +262,15 @@ h1,h2,h3{font-family:var(--font-title);font-weight:400;color:var(--main-dark)}
 .dress-icons svg{display:block}
 .dress-code-title{font-family:var(--font-sans);font-size:.8rem;letter-spacing:4px;margin-bottom:15px;color:var(--text-color);font-weight:600}
 .dress-code-main{font-size:2.8rem;margin-bottom:10px;line-height:1.1;color:var(--main-dark)}
-.no-kids-block{padding:25px;width:100%;border-top:1px solid rgba(172,140,212,.4);border-bottom:1px solid rgba(172,140,212,.4);margin-bottom:40px}
+.no-kids-block{padding:25px;width:100%;border-top:1px solid rgba(172,140,212,.4);border-bottom:1px solid rgba(172,140,212,.4);margin-bottom:40px; box-sizing: border-box;}
 
 /* Formularios (Tarjeta interior con textura) */
 .editorial-form-box{
   width:100%;
   background-color:var(--card-2);
   background-image: var(--paper-texture);
-  padding:40px 30px;border-radius:2px;border:1px solid rgba(172,140,212,.4);box-shadow:0 10px 30px rgba(0,0,0,.04);margin-top:20px
+  padding:40px 30px;border-radius:2px;border:1px solid rgba(172,140,212,.4);box-shadow:0 10px 30px rgba(0,0,0,.04);margin-top:20px;
+  box-sizing: border-box;
 }
 .rsvp-header{font-size:2rem;margin-bottom:5px;color:var(--main-dark)}
 .rsvp-subtitle{font-family:var(--font-sans);font-size:.75rem;letter-spacing:3px;color:var(--lilac-dark);margin-bottom:30px;text-transform:uppercase;font-weight: 600;}
@@ -294,7 +300,29 @@ h2:not(.dress-code-main),.names-container span.name,.save-date-date{
   animation:shineSweep 5s linear infinite;
 }
 
-@media(max-width:992px){.invitation-container{grid-template-columns:1fr}}
+/* ===== OPTIMIZACIÓN ESTRICTA PARA CELULARES (Evita desbordamiento horizontal) ===== */
+@media(max-width:992px){
+  .invitation-container{grid-template-columns:1fr}
+}
+@media(max-width:768px){
+  #invitation-content { padding: 15px 12px; } /* Ajuste del espacio contra los bordes de la pantalla */
+  .column { padding: 40px 20px; } /* Reducción de padding lateral para liberar espacio */
+  
+  /* Ajuste preciso de márgenes negativos para que no se salgan de la pantalla */
+  .photo-insert { width: calc(100% + 24px); margin: 30px -12px; }
+  .dress-code-box { width: calc(100% + 40px); margin: 0 -20px 40px; padding: 40px 20px; }
+  
+  /* Ajuste de fuentes para que luzcan elegantes pero no rompan el contenedor */
+  .names-container span.name { font-size: 3.2rem; }
+  .names-container span.ampersand { font-size: 3rem; margin: -5px 0 -10px; }
+  .save-date-date { font-size: 2.3rem; }
+  .dress-code-main { font-size: 2.4rem; }
+  .venue-name { font-size: 1.6rem; }
+  #countdown-timer b { font-size: 1.4rem; }
+  
+  .editorial-form-box, .venue-card { padding: 30px 15px; }
+}
+
 @media(prefers-reduced-motion:reduce){.anim-el{opacity:1!important;transform:none!important;filter:none!important;clip-path:none!important;letter-spacing:inherit}*{animation:none!important}}
 </style>
 </head>
@@ -389,7 +417,7 @@ h2:not(.dress-code-main),.names-container span.name,.save-date-date{
       </div>
     </div>
 
-    <button onclick="downloadICS()" class="btn anim-el fade-in-up" style="width:100%"><i class="fa-solid fa-calendar-plus"></i> AGREGAR AL CALENDARIO</button>
+    <button onclick="downloadICS()" class="btn anim-el fade-in-up"><i class="fa-solid fa-calendar-plus"></i> AGREGAR AL CALENDARIO</button>
   </div>
 
   <!-- ===== COLUMNA 2 ===== -->
@@ -411,7 +439,7 @@ h2:not(.dress-code-main),.names-container span.name,.save-date-date{
       <div class="map-iframe-container" style="margin-top: 15px;">
         <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3906.0086078215927!2d-100.2928491!3d25.784025099999994!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x866293b54d57f357%3A0xd9f41d92a51754a7!2sFuentes%20Platinum%20Eventos!5e1!3m2!1ses-419!2smx!4v1791666851913!5m2!1ses-419!2smx" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
       </div>
-      <a href="https://maps.app.goo.gl/ksDdHJdEjB3PU32bA?g_st=ic" target="_blank" class="btn" style="width:100%"><i class="fa-solid fa-location-dot"></i> UBICACIÓN EXACTA</a>
+      <a href="https://maps.app.goo.gl/ksDdHJdEjB3PU32bA?g_st=ic" target="_blank" class="btn"><i class="fa-solid fa-location-dot"></i> UBICACIÓN EXACTA</a>
     </div>
 
     <!-- FOTO 5 -->
@@ -475,7 +503,7 @@ h2:not(.dress-code-main),.names-container span.name,.save-date-date{
       <iframe data-testid="embed-iframe" style="border-radius:12px; border: 1px solid rgba(172,140,212,.4);" src="https://open.spotify.com/embed/playlist/5JYfmkScv2RMCFEBvm7BBJ?utm_source=generator&si=ac8a924d22b34fd6" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
     </div>
     
-    <a href="https://open.spotify.com/playlist/5JYfmkScv2RMCFEBvm7BBJ?si=5373c03954fd46ae&pt=9e66ead9e1841d189553e6eb2534e878" target="_blank" class="btn anim-el flip-in" style="width:100%"><i class="fa-solid fa-music"></i> AGREGAR CANCIONES</a>
+    <a href="https://open.spotify.com/playlist/5JYfmkScv2RMCFEBvm7BBJ?si=5373c03954fd46ae&pt=9e66ead9e1841d189553e6eb2534e878" target="_blank" class="btn anim-el flip-in"><i class="fa-solid fa-music"></i> AGREGAR CANCIONES</a>
 
     <!-- FOTO 9 -->
     <img src="assets/9.jpg" loading="lazy" decoding="async" class="photo-insert photo-rotate-left anim-el scale-in" onclick="openLightbox(this.src)" alt="Foto de Arturo y Diana">
@@ -483,7 +511,7 @@ h2:not(.dress-code-main),.names-container span.name,.save-date-date{
     <h2 class="anim-el track-in" style="font-size:2rem;margin-top:50px">GALERÍA EN VIVO</h2>
     <div class="divider anim-el scale-in"><i class="fa-solid fa-camera-retro" style="font-size:.9rem"></i></div>
     <p class="anim-el blur-in" style="font-size:.95rem;line-height:1.6">¡Queremos ver la boda a través de tus ojos! Comparte tus fotos y videos con nosotros.</p>
-    <a href="https://drive.google.com/drive/folders/1Ygk8CHUwRJePyZ05hiStbZYgsEdYSfyT?usp=sharing" target="_blank" class="btn anim-el fade-in-up" style="width:100%;margin-top:25px"><i class="fa-solid fa-cloud-arrow-up"></i> SUBIR MIS FOTOS</a>
+    <a href="https://drive.google.com/drive/folders/1Ygk8CHUwRJePyZ05hiStbZYgsEdYSfyT?usp=sharing" target="_blank" class="btn anim-el fade-in-up" style="margin-top:25px"><i class="fa-solid fa-cloud-arrow-up"></i> SUBIR MIS FOTOS</a>
 
     <!-- FOTO 10 -->
     <img src="assets/10.jpg" loading="lazy" decoding="async" class="photo-insert photo-rotate-right anim-el blur-in" onclick="openLightbox(this.src)" alt="Foto de Arturo y Diana">
@@ -526,7 +554,7 @@ h2:not(.dress-code-main),.names-container span.name,.save-date-date{
       <p style="font-size:.9rem;text-align:center;margin-bottom:25px">Nos encantaría atesorar tus palabras. Déjanos un mensaje para recordar este día por siempre.</p>
       <form id="wishesForm" onsubmit="return false">
         <div class="form-group-ed"><textarea id="wishesText" rows="3" required placeholder="Con cariño para Arturo y Diana..."></textarea></div>
-        <button type="button" onclick="sendWishes()" class="btn" style="width:100%;font-size:.85rem;padding:15px"><i class="fa-solid fa-paper-plane"></i> ENVIAR MENSAJE</button>
+        <button type="button" onclick="sendWishes()" class="btn" style="font-size:.85rem;padding:15px"><i class="fa-solid fa-paper-plane"></i> ENVIAR MENSAJE</button>
       </form>
     </div>
   </div>
