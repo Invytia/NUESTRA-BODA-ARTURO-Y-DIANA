@@ -8,6 +8,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=Great+Vibes&family=Lora:ital,wght@0,400;0,500;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<!-- Pre-carga de la primera imagen para que aparezca más rápido -->
+<link rel="preload" as="image" href="assets/1.jpg">
 <style>
 :root{
   --bg-color:#FCFAFD; 
@@ -154,7 +156,7 @@ i.fa-solid,i.fa-regular,i.fa-brands{display:inline-block;line-height:1}
 
 /* ===== FOTOS "SUELTAS" ===== */
 .photo-insert {
-  width: calc(100% + 40px); /* Hace que sobresalgan de la caja de la columna */
+  width: calc(100% + 40px);
   margin: 35px -20px;
   border-radius: 4px;
   box-shadow: 0 15px 35px rgba(74,65,56,0.18);
@@ -328,8 +330,8 @@ h2:not(.dress-code-main),.names-container span.name,.save-date-date{
       <span class="name anim-el track-in" style="transition-delay:.9s">DIANA</span>
     </div>
     
-    <!-- FOTO 1 -->
-    <img src="assets/1.jpg" class="photo-insert photo-rotate-left anim-el scale-in" onclick="openLightbox(this.src)" alt="Foto de Arturo y Diana">
+    <!-- FOTO 1: No lleva loading="lazy" porque está al principio (above the fold) -->
+    <img src="assets/1.jpg" class="photo-insert photo-rotate-left anim-el scale-in" onclick="openLightbox(this.src)" alt="Foto de Arturo y Diana" fetchpriority="high">
 
     <div class="divider anim-el scale-in" style="transition-delay:.3s"><i class="fa-solid fa-heart" style="font-size:.9rem"></i></div>
 
@@ -338,7 +340,7 @@ h2:not(.dress-code-main),.names-container span.name,.save-date-date{
     </p>
 
     <!-- FOTO 2 -->
-    <img src="assets/2.jpg" class="photo-insert photo-rotate-right anim-el blur-in" onclick="openLightbox(this.src)" alt="Foto de Arturo y Diana">
+    <img src="assets/2.jpg" loading="lazy" decoding="async" class="photo-insert photo-rotate-right anim-el blur-in" onclick="openLightbox(this.src)" alt="Foto de Arturo y Diana">
 
     <div class="parents-section">
       <p class="anim-el reveal-text" style="font-family:var(--font-script);font-size:2.2rem;color:var(--gold);margin-bottom:25px">Con la bendición de nuestros padres</p>
@@ -361,7 +363,7 @@ h2:not(.dress-code-main),.names-container span.name,.save-date-date{
     </div>
 
     <!-- FOTO 3 -->
-    <img src="assets/3.jpg" class="photo-insert photo-rotate-left anim-el fade-in-up" onclick="openLightbox(this.src)" alt="Foto de Arturo y Diana">
+    <img src="assets/3.jpg" loading="lazy" decoding="async" class="photo-insert photo-rotate-left anim-el fade-in-up" onclick="openLightbox(this.src)" alt="Foto de Arturo y Diana">
 
     <div class="calendar-wrapper anim-el flip-in">
       <div class="calendar-month">Diciembre 2026</div>
@@ -392,7 +394,7 @@ h2:not(.dress-code-main),.names-container span.name,.save-date-date{
   <div class="column">
     
     <!-- FOTO 4 -->
-    <img src="assets/4.jpg" class="photo-insert photo-rotate-right anim-el scale-in" onclick="openLightbox(this.src)" alt="Foto de Arturo y Diana">
+    <img src="assets/4.jpg" loading="lazy" decoding="async" class="photo-insert photo-rotate-right anim-el scale-in" onclick="openLightbox(this.src)" alt="Foto de Arturo y Diana">
 
     <h2 class="anim-el track-in" style="font-size:2.2rem;margin-bottom:5px">UBICACIÓN</h2>
     <div class="divider anim-el scale-in"><i class="fa-solid fa-map-location-dot" style="font-size:.9rem"></i></div>
@@ -411,7 +413,7 @@ h2:not(.dress-code-main),.names-container span.name,.save-date-date{
     </div>
 
     <!-- FOTO 5 -->
-    <img src="assets/5.jpg" class="photo-insert photo-rotate-left anim-el blur-in" onclick="openLightbox(this.src)" alt="Foto de Arturo y Diana">
+    <img src="assets/5.jpg" loading="lazy" decoding="async" class="photo-insert photo-rotate-left anim-el blur-in" onclick="openLightbox(this.src)" alt="Foto de Arturo y Diana">
 
     <h2 class="anim-el track-in" style="font-size:2rem;margin-top:20px">ITINERARIO</h2>
     <div class="divider anim-el scale-in"><i class="fa-regular fa-clock" style="font-size:.9rem"></i></div>
@@ -424,7 +426,7 @@ h2:not(.dress-code-main),.names-container span.name,.save-date-date{
     </div>
     
     <!-- FOTO 6 -->
-    <img src="assets/6.jpg" class="photo-insert photo-rotate-right anim-el fade-in-up" onclick="openLightbox(this.src)" alt="Foto de Arturo y Diana">
+    <img src="assets/6.jpg" loading="lazy" decoding="async" class="photo-insert photo-rotate-right anim-el fade-in-up" onclick="openLightbox(this.src)" alt="Foto de Arturo y Diana">
     
   </div>
 
@@ -432,12 +434,11 @@ h2:not(.dress-code-main),.names-container span.name,.save-date-date{
   <div class="column">
     
     <!-- FOTO 7 -->
-    <img src="assets/7.jpg" class="photo-insert photo-rotate-left anim-el fade-in-down" onclick="openLightbox(this.src)" alt="Foto de Arturo y Diana">
+    <img src="assets/7.jpg" loading="lazy" decoding="async" class="photo-insert photo-rotate-left anim-el fade-in-down" onclick="openLightbox(this.src)" alt="Foto de Arturo y Diana">
     
     <div class="dress-code-box anim-el scale-in" style="margin-top: 10px;">
       <div class="dress-icons">
         <i class="fa-solid fa-user-tie"></i>
-        <!-- Ícono de mujer con vestido largo de gala -->
         <i style="display:inline-flex;align-items:flex-end;">
           <svg viewBox="0 0 32 36" fill="currentColor" height="1em" aria-label="Mujer con vestido de gala" role="img">
             <circle cx="16" cy="4.6" r="3.5"/>
@@ -455,7 +456,7 @@ h2:not(.dress-code-main),.names-container span.name,.save-date-date{
     </div>
 
     <!-- FOTO 8 -->
-    <img src="assets/8.jpg" class="photo-insert photo-rotate-right anim-el blur-in" onclick="openLightbox(this.src)" alt="Foto de Arturo y Diana">
+    <img src="assets/8.jpg" loading="lazy" decoding="async" class="photo-insert photo-rotate-right anim-el blur-in" onclick="openLightbox(this.src)" alt="Foto de Arturo y Diana">
 
     <div class="no-kids-block anim-el blur-in">
       <p style="font-size:1rem;font-style:italic;line-height:1.6;text-align:center">
@@ -469,13 +470,14 @@ h2:not(.dress-code-main),.names-container span.name,.save-date-date{
     <p class="anim-el blur-in" style="font-size:.95rem;line-height:1.6;margin-bottom:25px">Ayúdanos a crear el ambiente perfecto agregando tus canciones favoritas a nuestra playlist.</p>
     
     <div class="anim-el fade-in-up" style="width:100%; margin-bottom: 15px;">
+      <!-- También optimizamos el iframe de Spotify -->
       <iframe data-testid="embed-iframe" style="border-radius:12px; border: 1px solid rgba(172,140,212,.4);" src="https://open.spotify.com/embed/playlist/5JYfmkScv2RMCFEBvm7BBJ?utm_source=generator&si=ac8a924d22b34fd6" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
     </div>
     
     <a href="https://open.spotify.com/playlist/5JYfmkScv2RMCFEBvm7BBJ?si=5373c03954fd46ae&pt=9e66ead9e1841d189553e6eb2534e878" target="_blank" class="btn anim-el flip-in" style="width:100%"><i class="fa-solid fa-music"></i> AGREGAR CANCIONES</a>
 
     <!-- FOTO 9 -->
-    <img src="assets/9.jpg" class="photo-insert photo-rotate-left anim-el scale-in" onclick="openLightbox(this.src)" alt="Foto de Arturo y Diana">
+    <img src="assets/9.jpg" loading="lazy" decoding="async" class="photo-insert photo-rotate-left anim-el scale-in" onclick="openLightbox(this.src)" alt="Foto de Arturo y Diana">
 
     <h2 class="anim-el track-in" style="font-size:2rem;margin-top:50px">GALERÍA EN VIVO</h2>
     <div class="divider anim-el scale-in"><i class="fa-solid fa-camera-retro" style="font-size:.9rem"></i></div>
@@ -483,7 +485,7 @@ h2:not(.dress-code-main),.names-container span.name,.save-date-date{
     <a href="https://drive.google.com/drive/folders/1Ygk8CHUwRJePyZ05hiStbZYgsEdYSfyT?usp=sharing" target="_blank" class="btn anim-el fade-in-up" style="width:100%;margin-top:25px"><i class="fa-solid fa-cloud-arrow-up"></i> SUBIR MIS FOTOS</a>
 
     <!-- FOTO 10 -->
-    <img src="assets/10.jpg" class="photo-insert photo-rotate-right anim-el blur-in" onclick="openLightbox(this.src)" alt="Foto de Arturo y Diana">
+    <img src="assets/10.jpg" loading="lazy" decoding="async" class="photo-insert photo-rotate-right anim-el blur-in" onclick="openLightbox(this.src)" alt="Foto de Arturo y Diana">
 
     <!-- RSVP -->
     <div class="editorial-form-box anim-el flip-in" style="margin-top:50px">
